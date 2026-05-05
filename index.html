@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🥋 Pequeños Kenshi · SKBC Gipuzkoa</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Serif+JP:wght@700&display=swap');
+
+:root {
+–red: #d32f2f;
+–red-light: #ef5350;
+–orange: #e64a19;
+–orange-light: #ff7043;
+–yellow: #f9a825;
+–green: #2e7d32;
+–green-light: #43a047;
+–blue: #1565c0;
+–blue-light: #1e88e5;
+–purple: #6a1b9a;
+–white: #fff;
+–bg: #fdf6ec;
+–bg2: #fff;
+–ink: #1a1200;
+–ink2: #3d2b00;
+–muted: #5d4e37;
+–card: #ffffff;
+–border: #e8d5b0;
+–shadow: 0 4px 20px rgba(0,0,0,0.12);
+–shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+–radius: 18px;
+}
+
+- { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+font-family: ‘Nunito’, ‘Trebuchet MS’, Arial, sans-serif;
+background: var(–bg);
+color: var(–ink);
+min-height: 100vh;
+overflow-x: hidden;
+user-select: none;
+font-size: 16px;
+line-height: 1.5;
+}
+
+/* ─── CLOUDS BG ─── */
+body::before {
+content:’’;
+position:fixed; inset:0;
+background: linear-gradient(160deg, #fff9f0 0%, #fdf0e0 50%, #f0f8ff 100%);
+pointer-events:none; z-index:0;
+}
+
+/* ─── SCREENS ─── */
+.screen { display:none; position:relative; z-index:1; min-height:100vh; }
+.screen.active { display:flex; flex-direction:column; }
+
+/* ─── LOGIN ─── */
+#screen-login {
+align-items:center; justify-content:center;
+padding:20px; text-align:center;
+}
+
+.logo-kids {
+font-size:80px; margin-bottom:8px;
+animation: bounce 2s infinite;
+}
+@keyframes bounce {
+0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}
+}
+
+.title-kids {
+font-family:‘Nunito’, sans-serif; font-weight:900;
+font-size:34px; color:#b71c1c;
+text-shadow: 2px 2px 0 rgba(183,28,28,0.15);
+margin-bottom:4px; letter-spacing:-0.5px;
+}
+.subtitle-kids {
+font-size:15px; color:var(–muted); font-weight:700; margin-bottom:6px;
+}
+.kanji-small {
+font-family:‘Noto Serif JP’,serif;
+font-size:28px; color:var(–orange);
+margin-bottom:24px;
+}
+
+.card-kids {
+background:white;
+border-radius:var(–radius);
+box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+padding:28px 24px;
+max-width:380px; width:100%;
+border: 2px solid var(–border);
+}
+
+.card-kids h2 {
+font-size:22px; font-weight:900;
+color:var(–ink); margin-bottom:20px;
+letter-spacing:-0.3px;
+}
+
+.input-kids {
+width:100%;
+background:#fff;
+border:2px solid #c9a84c;
+border-radius:14px;
+padding:14px 18px;
+font-family:‘Nunito’, sans-serif;
+font-size:17px; font-weight:700;
+color:var(–ink);
+outline:none; margin-bottom:14px;
+transition: border-color 0.2s, box-shadow 0.2s;
+box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+}
+.input-kids:focus {
+border-color:var(–orange);
+box-shadow: 0 0 0 3px rgba(230,74,25,0.15), inset 0 1px 3px rgba(0,0,0,0.06);
+}
+.input-kids::placeholder { color:#a0856a; font-weight:600; }
+
+.btn-kids {
+width:100%; padding:16px;
+border:none; border-radius:14px;
+font-family:‘Nunito’,cursive;
+font-size:18px; font-weight:900;
+cursor:pointer;
+transition:transform 0.15s, box-shadow 0.15s;
+margin-bottom:10px;
+position:relative;
+}
+.btn-kids:active { transform:scale(0.96); }
+.btn-red { background:#c62828; color:white; box-shadow:0 5px 0 #7f0000; font-size:17px; }
+.btn-red:hover { transform:translateY(-2px); box-shadow:0 7px 0 #b71c1c; }
+.btn-orange { background:#d84315; color:white; box-shadow:0 5px 0 #8d2300; font-size:17px; }
+.btn-orange:hover { transform:translateY(-2px); box-shadow:0 7px 0 #bf360c; }
+.btn-green { background:#2e7d32; color:white; box-shadow:0 5px 0 #1b5e20; font-size:17px; }
+.btn-green:hover { transform:translateY(-2px); box-shadow:0 7px 0 #2e7d32; }
+.btn-blue { background:#1565c0; color:white; box-shadow:0 5px 0 #0d47a1; font-size:17px; }
+.btn-blue:hover { transform:translateY(-2px); box-shadow:0 7px 0 #1565c0; }
+.btn-yellow { background:var(–yellow); color:var(–ink); box-shadow:0 5px 0 #f9a825; }
+.btn-sm-kids {
+padding:8px 18px; border:none; border-radius:10px;
+font-family:‘Nunito’,cursive; font-size:14px; font-weight:800;
+cursor:pointer; background:#fff; border:2px solid #eee;
+}
+.btn-sm-kids:hover { background:#f5f5f5; }
+
+.err-kids { color:#b71c1c; font-size:15px; font-weight:800; min-height:18px; margin-top:6px; background:#ffebee; padding:6px 12px; border-radius:8px; display:none; }
+.link-kids { color:var(–blue); font-weight:800; cursor:pointer; font-size:15px; }
+
+/* ─── TOP BAR ─── */
+.topbar-kids {
+display:flex; align-items:center; justify-content:space-between;
+padding:14px 20px;
+background:white;
+box-shadow:0 2px 12px rgba(0,0,0,0.1);
+border-bottom: 2px solid var(–border);
+position:sticky; top:0; z-index:100;
+}
+.topbar-left { font-size:22px; font-weight:900; color:#b71c1c; }
+.topbar-center { font-size:13px; font-weight:800; color:var(–muted); }
+.topbar-right { display:flex; align-items:center; gap:10px; }
+.belt-display {
+display:inline-flex; align-items:center; gap:6px;
+background:var(–bg); border-radius:20px; border:1px solid var(–border);
+padding:6px 14px; font-size:13px; font-weight:800; color:var(–ink2);
+}
+.belt-dot {
+width:14px; height:14px; border-radius:50%;
+display:inline-block;
+}
+
+/* ─── MAIN ─── */
+.main-kids { padding:20px; max-width:700px; margin:0 auto; width:100%; }
+
+.welcome-kids {
+text-align:center; padding:20px 0 16px;
+}
+.welcome-kids h1 {
+font-size:28px; font-weight:900; color:var(–ink);
+letter-spacing:-0.5px;
+}
+.welcome-kids p { font-size:15px; color:var(–muted); margin-top:4px; font-weight:600; font-style:italic; }
+
+/* Stars row */
+.stars-row {
+display:flex; gap:12px; margin:16px 0 24px;
+justify-content:center; flex-wrap:wrap;
+}
+.star-card {
+background:white; border-radius:16px;
+box-shadow:var(–shadow-sm);
+padding:16px 20px; text-align:center;
+flex:1; min-width:80px; max-width:120px;
+border:2px solid var(–border);
+}
+.star-num { font-size:32px; font-weight:900; color:#b71c1c; }
+.star-label { font-size:12px; font-weight:800; color:var(–muted); margin-top:2px; }
+
+/* Badges */
+.badges-row {
+display:flex; gap:8px; flex-wrap:wrap;
+justify-content:center; margin-bottom:20px;
+}
+.badge {
+background:white; border-radius:12px;
+padding:8px 14px; font-size:20px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+border:2px solid #eee;
+animation:popIn 0.4s ease;
+}
+@keyframes popIn {
+from{transform:scale(0)} to{transform:scale(1)}
+}
+
+/* Games grid */
+.section-title-kids {
+font-size:13px; font-weight:900; letter-spacing:2px;
+color:var(–muted); text-transform:uppercase;
+margin-bottom:12px; padding-bottom:8px;
+border-bottom:2px solid var(–border);
+}
+.games-grid-kids {
+display:grid; grid-template-columns:repeat(2,1fr);
+gap:14px; margin-bottom:32px;
+}
+.game-card-kids {
+background:white; border-radius:var(–radius);
+box-shadow:var(–shadow-sm);
+padding:20px 16px; cursor:pointer;
+transition:transform 0.2s, box-shadow 0.2s;
+text-align:center;
+border:2px solid var(–border);
+}
+.game-card-kids:hover {
+transform:translateY(-4px);
+box-shadow:0 10px 28px rgba(0,0,0,0.14);
+border-color:#c9a84c;
+}
+.game-card-kids:active { transform:scale(0.97); }
+.game-emoji { font-size:44px; margin-bottom:10px; display:block; }
+.game-card-kids h3 { font-size:15px; font-weight:900; color:var(–ink); margin-bottom:4px; }
+.game-card-kids p { font-size:12px; color:var(–muted); font-weight:700; }
+.game-badge-kids {
+display:inline-block; margin-top:8px;
+padding:3px 10px; border-radius:20px;
+font-size:11px; font-weight:800;
+background:var(–bg); color:var(–orange);
+}
+
+/* ─── GAME SCREEN ─── */
+.game-header-kids {
+display:flex; align-items:center; gap:12px;
+padding:14px 20px; background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+border-bottom:2px solid var(–border);
+}
+.game-title-kids { font-size:18px; font-weight:900; flex:1; color:var(–ink); }
+.progress-kids {
+flex:1; height:12px; background:#e8d5b0;
+border-radius:6px; overflow:hidden;
+}
+.progress-fill-kids {
+height:100%;
+background:linear-gradient(90deg, #d84315, #f9a825);
+border-radius:6px; transition:width 0.4s ease;
+}
+.score-kids { font-size:16px; font-weight:900; color:#d84315; }
+
+.game-area-kids {
+padding:20px; max-width:600px;
+margin:0 auto; width:100%;
+}
+
+/* Question */
+.q-card-kids {
+background:white; border-radius:var(–radius);
+box-shadow:var(–shadow-sm); padding:24px;
+margin-bottom:16px; text-align:center;
+border:2px solid var(–border);
+}
+.q-num-kids { font-size:12px; font-weight:800; color:var(–muted); margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
+.q-emoji-big { font-size:56px; margin-bottom:12px; }
+.q-text-kids { font-size:20px; font-weight:800; color:var(–ink); line-height:1.4; }
+.q-kanji-kids {
+font-family:‘Noto Serif JP’,serif;
+font-size:36px; color:var(–orange); margin-bottom:8px;
+}
+
+/* Options */
+.options-kids { display:grid; gap:10px; }
+.option-kids {
+background:white; border:2px solid var(–border);
+border-radius:16px; padding:16px 20px;
+font-family:‘Nunito’, sans-serif; font-size:16px;
+font-weight:700; cursor:pointer; text-align:left;
+transition:all 0.15s; display:flex;
+align-items:center; gap:12px; color:var(–ink2);
+box-shadow:var(–shadow-sm);
+}
+.option-kids:hover:not(:disabled) {
+border-color:#d84315; background:#fff3e0;
+transform:translateX(4px); color:var(–ink);
+}
+.option-kids.correct {
+border-color:#2e7d32; background:#e8f5e9;
+color:#1b5e20; font-weight:800;
+}
+.option-kids.wrong {
+border-color:#c62828; background:#ffebee;
+color:#b71c1c; font-weight:800;
+}
+.option-letter {
+width:32px; height:32px; border-radius:50%;
+background:#f5e6d0; border:2px solid #c9a84c;
+display:flex; align-items:center; justify-content:center;
+font-weight:900; font-size:13px; flex-shrink:0;
+color:var(–ink2);
+}
+
+/* Feedback */
+.feedback-kids {
+background:white; border-radius:16px;
+box-shadow:var(–shadow-sm); padding:16px 20px;
+margin-top:12px; font-size:15px; font-weight:700;
+display:none; text-align:center; line-height:1.5;
+}
+.feedback-kids.correct { border:3px solid #2e7d32; color:#1b5e20; background:#f1f8e9; }
+.feedback-kids.wrong { border:3px solid #c62828; color:#b71c1c; background:#ffebee; }
+
+/* Celebration */
+.celebration {
+position:fixed; inset:0; z-index:500;
+display:none; align-items:center;
+justify-content:center;
+background:rgba(255,248,230,0.95);
+backdrop-filter:blur(4px);
+flex-direction:column;
+}
+.celebration.show { display:flex; }
+.celebration-emoji { font-size:100px; animation:bigBounce 0.5s ease; }
+@keyframes bigBounce {
+0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)}
+}
+.celebration h2 { font-size:32px; font-weight:900; color:var(–red); margin:16px 0 8px; }
+.celebration p { font-size:18px; color:#888; margin-bottom:24px; }
+.stars-earned { font-size:48px; }
+
+/* ─── MEMORY GAME ─── */
+.memory-grid {
+display:grid; gap:10px;
+margin-bottom:16px;
+}
+.memory-card-kids {
+aspect-ratio:1; background:var(–orange);
+border-radius:14px; cursor:pointer;
+display:flex; align-items:center;
+justify-content:center; font-size:32px;
+transition:transform 0.3s, background 0.3s;
+transform-style:preserve-3d;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+position:relative; overflow:hidden;
+}
+.memory-card-kids.flipped { background:white; }
+.memory-card-kids.matched {
+background:#e8f5e9;
+border:3px solid var(–green);
+}
+.memory-card-kids .front {
+position:absolute; font-size:28px;
+opacity:0; transition:opacity 0.15s;
+}
+.memory-card-kids.flipped .front,
+.memory-card-kids.matched .front { opacity:1; }
+.memory-card-kids .back { font-size:32px; transition:opacity 0.15s; }
+.memory-card-kids.flipped .back,
+.memory-card-kids.matched .back { opacity:0; }
+
+/* ─── BELT ORDER GAME ─── */
+.belt-sort-area {
+display:flex; flex-direction:column; gap:8px;
+margin-bottom:16px;
+}
+.belt-item {
+background:white; border-radius:14px;
+padding:14px 18px; display:flex;
+align-items:center; gap:14px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+cursor:grab; border:3px solid transparent;
+font-size:16px; font-weight:800;
+transition:transform 0.15s, box-shadow 0.15s;
+}
+.belt-item:active { cursor:grabbing; transform:scale(1.02); }
+.belt-item.drag-over { border-color:var(–orange); background:#fff8ee; }
+.belt-strip {
+width:48px; height:14px; border-radius:7px;
+flex-shrink:0;
+}
+
+/* ─── PUZZLE ─── */
+.puzzle-wrap {
+background:white; border-radius:var(–radius);
+box-shadow:var(–shadow); padding:20px;
+margin-bottom:16px; text-align:center;
+}
+.kanji-display {
+font-family:‘Noto Serif JP’,serif;
+font-size:80px; color:var(–orange);
+margin-bottom:16px; line-height:1;
+}
+.puzzle-hint {
+font-size:15px; color:#aaa; font-weight:700;
+margin-bottom:16px;
+}
+.puzzle-options {
+display:grid; grid-template-columns:1fr 1fr;
+gap:10px;
+}
+.puzzle-opt {
+background:var(–bg); border:3px solid #eee;
+border-radius:14px; padding:14px;
+font-size:15px; font-weight:800; cursor:pointer;
+transition:all 0.15s;
+}
+.puzzle-opt:hover { border-color:var(–orange); background:#fff8ee; }
+.puzzle-opt.correct { border-color:var(–green); background:#e8f5e9; color:#2e7d32; }
+.puzzle-opt.wrong { border-color:var(–red); background:#ffebee; color:var(–red); }
+
+/* ─── BODY POINT ─── */
+.body-wrap {
+position:relative; max-width:260px;
+margin:0 auto 16px; cursor:pointer;
+}
+.body-wrap img { width:100%; border-radius:20px; }
+.body-point {
+position:absolute; width:36px; height:36px;
+border-radius:50%; background:rgba(255,70,70,0.85);
+display:flex; align-items:center; justify-content:center;
+font-size:18px; color:white; font-weight:900;
+box-shadow:0 0 0 4px white, 0 4px 12px rgba(0,0,0,0.2);
+cursor:pointer; transition:transform 0.15s;
+animation:pulse 2s infinite;
+}
+@keyframes pulse {
+0%,100%{box-shadow:0 0 0 4px white,0 4px 12px rgba(0,0,0,0.2)}
+50%{box-shadow:0 0 0 8px rgba(255,70,70,0.3),0 4px 12px rgba(0,0,0,0.2)}
+}
+.body-point:hover { transform:scale(1.15); }
+
+/* ─── KIAI GAME ─── */
+.kiai-arena {
+background:white; border-radius:var(–radius);
+box-shadow:var(–shadow); padding:24px;
+text-align:center; margin-bottom:16px;
+}
+.kiai-target {
+font-size:80px; margin:20px 0;
+transition:transform 0.1s;
+}
+.kiai-target.hit { transform:scale(1.3); }
+.kiai-btn {
+width:120px; height:120px; border-radius:50%;
+background:var(–red); border:none;
+font-size:32px; cursor:pointer;
+box-shadow:0 8px 0 #b71c1c;
+transition:transform 0.1s, box-shadow 0.1s;
+margin:10px auto; display:block;
+}
+.kiai-btn:active {
+transform:translateY(6px);
+box-shadow:0 2px 0 #b71c1c;
+}
+.kiai-timer {
+font-size:40px; font-weight:900;
+color:var(–orange); margin-bottom:8px;
+}
+
+/* ─── COUNT JP ─── */
+.count-display {
+font-family:‘Noto Serif JP’,serif;
+font-size:72px; color:var(–orange);
+text-align:center; margin:20px 0;
+line-height:1;
+}
+.count-romaji { font-size:24px; color:#bbb; font-weight:800; text-align:center; margin-bottom:20px; }
+
+/* ─── DRESS KENSHI ─── */
+.kenshi-display {
+font-size:100px; text-align:center;
+margin:10px 0;
+}
+.belt-choices {
+display:flex; gap:8px; flex-wrap:wrap;
+justify-content:center; margin:16px 0;
+}
+.belt-choice {
+width:44px; height:12px; border-radius:6px;
+border:3px solid transparent; cursor:pointer;
+transition:all 0.15s;
+}
+.belt-choice:hover { transform:scale(1.2); }
+.belt-choice.selected { border-color:var(–ink); transform:scale(1.2); }
+
+/* ─── SENSEI PANEL ─── */
+.sensei-kids-grid {
+display:grid; grid-template-columns:260px 1fr;
+gap:0; flex:1; height:calc(100vh - 65px);
+}
+.sensei-kids-sidebar {
+border-right:2px solid var(–border);
+overflow-y:auto; padding:14px;
+background:#fafaf7;
+}
+.kid-list-item {
+padding:12px 14px; border-radius:14px;
+cursor:pointer; transition:background 0.15s;
+margin-bottom:6px; border:2px solid transparent;
+}
+.kid-list-item:hover { background:#fff3e0; }
+.kid-list-item.active { background:#fff3e0; border-color:#d84315; }
+.kid-name { font-size:15px; font-weight:900; color:var(–ink); }
+.kid-belt-tag { font-size:12px; color:var(–muted); font-weight:700; margin-top:2px; }
+.banned-tag {
+display:inline-block; background:#ffebee;
+color:var(–red); font-size:11px; font-weight:800;
+padding:2px 8px; border-radius:6px; margin-left:6px;
+}
+.sensei-kids-detail { padding:24px; overflow-y:auto; }
+
+/* ─── RESULTS ─── */
+.results-kids {
+text-align:center; padding:32px 20px;
+}
+.results-stars { font-size:64px; }
+.results-title { font-size:28px; font-weight:900; color:var(–ink); margin:12px 0 4px; }
+.results-msg { font-size:16px; color:#888; margin-bottom:24px; }
+.stars-row-result {
+display:flex; justify-content:center; gap:8px; font-size:48px; margin:12px 0;
+}
+
+/* ─── CONFETTI ─── */
+.confetti-piece {
+position:fixed; width:10px; height:10px;
+border-radius:2px; animation:confettiFall 2s ease-in forwards;
+z-index:1000;
+}
+@keyframes confettiFall {
+0%{transform:translateY(-20px) rotate(0deg); opacity:1}
+100%{transform:translateY(100vh) rotate(720deg); opacity:0}
+}
+
+/* ─── STORY ─── */
+.story-panel {
+background:white; border-radius:var(–radius);
+box-shadow:var(–shadow-sm); padding:24px;
+margin-bottom:16px; border:2px solid var(–border);
+}
+.story-scene { font-size:64px; text-align:center; margin-bottom:16px; }
+.story-text { font-size:17px; font-weight:700; line-height:1.7; color:var(–ink2); margin-bottom:20px; }
+.story-choices { display:flex; flex-direction:column; gap:10px; }
+.story-choice {
+background:var(–bg); border:2px solid #c9a84c;
+border-radius:14px; padding:14px 18px;
+font-family:‘Nunito’, sans-serif; font-size:15px;
+font-weight:700; cursor:pointer; text-align:left;
+transition:all 0.15s; color:var(–ink2);
+}
+.story-choice:hover { border-color:#d84315; background:#fff3e0; color:var(–ink); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+display:none; position:fixed; inset:0;
+background:rgba(0,0,0,0.5); z-index:200;
+align-items:center; justify-content:center;
+}
+.modal-overlay.active { display:flex; }
+.modal-kids {
+background:white; border-radius:var(–radius);
+padding:32px 24px; max-width:360px; width:90%;
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-kids h3 { font-size:22px; font-weight:900; margin-bottom:12px; }
+.modal-kids p { font-size:15px; color:#888; margin-bottom:20px; }
+.modal-btns { display:flex; gap:10px; justify-content:center; }
+
+/* ─── NOTIFICATION ─── */
+.notif-kids {
+position:fixed; top:80px; right:16px;
+background:white; border-radius:14px;
+padding:12px 18px; font-size:15px; font-weight:800;
+box-shadow:var(–shadow); z-index:300;
+transform:translateX(120%); transition:transform 0.3s;
+border:3px solid var(–yellow);
+}
+.notif-kids.show { transform:none; }
+
+/* Responsive */
+@media(max-width:600px) {
+.games-grid-kids { grid-template-columns:1fr 1fr; }
+.sensei-kids-grid { grid-template-columns:1fr; }
+.title-kids { font-size:24px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+
+<div id="screen-login" class="screen active">
+  <div class="logo-kids">🥋</div>
+  <div class="title-kids">Pequeños Kenshi</div>
+  <div class="subtitle-kids">SKBC Gipuzkoa · Dojo Digital</div>
+  <div class="kanji-small">少林寺拳法</div>
+
+  <!-- LOGIN -->
+
+  <div id="form-login-kids" class="card-kids">
+    <h2>¡Hola! 👋 Entra al Dojo</h2>
+    <input class="input-kids" id="k-login-user" placeholder="Tu nombre de usuario" autocomplete="username">
+    <input class="input-kids" type="password" id="k-login-pass" placeholder="Tu contraseña secreta 🔑" autocomplete="current-password">
+    <button class="btn-kids btn-red" onclick="kHandleLogin()">¡Entrar! 🥋</button>
+    <div class="err-kids" id="k-login-err"></div>
+    <div style="margin-top:12px; font-size:15px; font-weight:700;">
+      ¿Primera vez? <span class="link-kids" onclick="kShowRegister()">¡Créate una cuenta!</span>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+
+  <div id="form-register-kids" class="card-kids" style="display:none; margin-top:12px;">
+    <h2>¡Únete al Dojo! 🌟</h2>
+    <input class="input-kids" id="k-reg-user" placeholder="Elige tu nombre de kenshi">
+    <input class="input-kids" id="k-reg-name" placeholder="Tu nombre real">
+    <input class="input-kids" type="number" id="k-reg-age" placeholder="¿Cuántos años tienes? 🎂" min="4" max="14">
+    <input class="input-kids" type="password" id="k-reg-pass" placeholder="Contraseña secreta (mínimo 4 letras)">
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">¿Qué cinturón tienes? 🥋</div>
+      <select class="input-kids" id="k-reg-belt" style="margin-bottom:0;">
+        <option value="blanco">🤍 Blanco</option>
+        <option value="blanco-amarillo">🤍💛 Blanco/Amarillo</option>
+        <option value="amarillo">💛 Amarillo</option>
+        <option value="amarillo-naranja">💛🧡 Amarillo/Naranja</option>
+        <option value="naranja">🧡 Naranja</option>
+        <option value="naranja-verde">🧡💚 Naranja/Verde</option>
+        <option value="verde">💚 Verde</option>
+        <option value="verde-azul">💚💙 Verde/Azul</option>
+        <option value="azul">💙 Azul</option>
+        <option value="azul-marron">💙🤎 Azul/Marrón</option>
+        <option value="marron">🤎 Marrón</option>
+      </select>
+    </div>
+    <button class="btn-kids btn-orange" onclick="kHandleRegister()">¡Unirme al dojo! 🎉</button>
+    <div class="err-kids" id="k-reg-err"></div>
+    <div style="margin-top:12px; font-size:15px; font-weight:700;">
+      ¿Ya tienes cuenta? <span class="link-kids" onclick="kShowLogin()">Entrar</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+
+<div id="screen-main-kids" class="screen">
+  <div class="topbar-kids">
+    <div class="topbar-left">🥋 Dojo</div>
+    <div class="topbar-center" id="k-top-name">KENSHI</div>
+    <div class="topbar-right">
+      <div class="belt-display">
+        <span class="belt-dot" id="k-belt-dot"></span>
+        <span id="k-belt-name"></span>
+      </div>
+      <button class="btn-sm-kids" onclick="kLogout()">Salir</button>
+    </div>
+  </div>
+  <div class="main-kids">
+    <div class="welcome-kids">
+      <h1>¡Hola, <span id="k-welcome-name"></span>! 🌟</h1>
+      <p>"Vive la mitad para ti, la mitad para los demás" · Doshin So</p>
+    </div>
+    <div class="stars-row" id="k-stars-row"></div>
+    <div id="k-badges-row" class="badges-row"></div>
+    <div style="display:flex; gap:8px; margin-bottom:16px;">
+      <button id="tab-games" onclick="kShowTab('games')" style="flex:1;padding:12px;border-radius:12px;border:2px solid #c9a84c;background:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#3d2b00;transition:all 0.15s;" class="tab-active-style">🎮 Juegos</button>
+      <button id="tab-ranking" onclick="kShowTab('ranking')" style="flex:1;padding:12px;border-radius:12px;border:2px solid #e0e0e0;background:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#9e9e9e;transition:all 0.15s;">🏆 Ranking</button>
+    </div>
+    <div id="tab-games-content">
+      <div class="section-title-kids">🎮 Elige tu juego</div>
+      <div class="games-grid-kids" id="k-games-grid"></div>
+    </div>
+    <div id="tab-ranking-content" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+
+<div id="screen-game-kids" class="screen">
+  <div class="game-header-kids">
+    <button class="btn-sm-kids" onclick="kExitGame()">← Volver</button>
+    <div class="game-title-kids" id="k-game-title">Juego</div>
+    <div class="progress-kids"><div class="progress-fill-kids" id="k-progress" style="width:0%"></div></div>
+    <div class="score-display" id="k-score">⭐ 0</div>
+  </div>
+  <div class="game-area-kids fade-in" id="k-game-area"></div>
+</div>
+
+<!-- ═══ SENSEI ═══ -->
+
+<div id="screen-sensei-kids" class="screen">
+  <div class="topbar-kids">
+    <div class="topbar-left">👨‍🏫 Sensei</div>
+    <div class="topbar-center" style="font-weight:900; color:var(--red);">Panel Pequeños Kenshi</div>
+    <div class="topbar-right"><button class="btn-sm-kids" onclick="kLogout()">Salir</button></div>
+  </div>
+  <div class="sensei-kids-grid">
+    <div class="sensei-kids-sidebar">
+      <div style="font-size:12px; font-weight:900; letter-spacing:2px; color:#ccc; margin-bottom:12px; text-transform:uppercase;">Alumnos</div>
+      <input class="input-kids" placeholder="🔍 Buscar..." oninput="kFilterKids(this.value)" style="font-size:14px; padding:10px 14px; margin-bottom:10px;">
+      <div id="k-kid-list"></div>
+    </div>
+    <div class="sensei-kids-detail" id="k-sensei-detail">
+      <div style="text-align:center; padding:60px; color:#ccc; font-size:18px; font-weight:700;">
+        Selecciona un pequeño kenshi 👆
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+
+<div class="modal-overlay" id="k-modal">
+  <div class="modal-kids">
+    <h3 id="k-modal-title">⚠️ Confirmar</h3>
+    <p id="k-modal-msg">¿Estás seguro?</p>
+    <div class="modal-btns">
+      <button class="btn-kids btn-yellow" style="width:auto;padding:12px 20px;" onclick="kCloseModal()">Cancelar</button>
+      <button class="btn-kids btn-red" style="width:auto;padding:12px 20px;" id="k-modal-confirm">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Celebration -->
+
+<div class="celebration" id="k-celebration">
+  <div class="celebration-emoji" id="k-cel-emoji">🎉</div>
+  <h2 id="k-cel-title">¡Increíble!</h2>
+  <p id="k-cel-msg">¡Lo has hecho genial!</p>
+  <div class="stars-earned" id="k-cel-stars">⭐⭐⭐</div>
+  <button class="btn-kids btn-green" style="margin-top:20px;max-width:200px;" onclick="kHideCelebration()">¡Seguir jugando! 🎮</button>
+</div>
+
+<!-- Notification -->
+
+<div class="notif-kids" id="k-notif"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════════
+const SB_URL = 'https://wucxazuhrgokvtajqmsr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Y3hhenVocmdva3Z0YWpxbXNyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MjQzODQsImV4cCI6MjA5MzUwMDM4NH0.8Lg_0b7TSNEt69Uwv_1YQjJW5InFEZ3j3JXWQ1ZaYEU';
+
+async function sbK(path, opts={}) {
+  const res = await fetch(`${SB_URL}/rest/v1${path}`, {
+    ...opts,
+    headers: {
+      'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || 'return=representation',
+      ...(opts.headers||{})
+    }
+  });
+  if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.message||res.statusText); }
+  const t = await res.text();
+  return t ? JSON.parse(t) : null;
+}
+
+async function dbGetKid(username) {
+  const r = await sbK(`/kenshi_kids?username=eq.${encodeURIComponent(username)}&limit=1`);
+  return r&&r[0]||null;
+}
+async function dbGetAllKids() { return await sbK('/kenshi_kids?order=registered_at.desc')||[]; }
+async function dbGetKidStats(id) {
+  const r = await sbK(`/kids_stats?kenshi_id=eq.${id}&limit=1`);
+  return r&&r[0]||{total_games:0,total_stars:0,badges:[]};
+}
+async function dbGetKidHistory(id) { return await sbK(`/kids_history?kenshi_id=eq.${id}&order=played_at.desc&limit=20`)||[]; }
+
+async function dbSaveGameResult(kId, gameId, stars) {
+  // Upsert stats
+  await sbK('/kids_stats', {
+    method:'POST', prefer:'return=minimal',
+    headers:{'Prefer':'resolution=ignore-duplicates,return=minimal'},
+    body: JSON.stringify({kenshi_id:kId, total_games:0, total_stars:0, badges:[]})
+  }).catch(()=>{});
+  const cur = await dbGetKidStats(kId);
+  // Check badge
+  const newBadges = [...(cur.badges||[])];
+  const totalGames = (cur.total_games||0)+1;
+  const totalStars = (cur.total_stars||0)+stars;
+  if(stars===3 && !newBadges.includes('⭐')) newBadges.push('⭐');
+  if(totalGames>=5 && !newBadges.includes('🏆')) newBadges.push('🏆');
+  if(totalGames>=10 && !newBadges.includes('🥋')) newBadges.push('🥋');
+  if(totalStars>=30 && !newBadges.includes('🌟')) newBadges.push('🌟');
+  if(totalGames>=3 && totalStars>=(totalGames*2) && !newBadges.includes('💎')) newBadges.push('💎');
+
+  await sbK(`/kids_stats?kenshi_id=eq.${kId}`, {
+    method:'PATCH', prefer:'return=minimal',
+    body: JSON.stringify({total_games:totalGames, total_stars:totalStars, badges:newBadges, updated_at:new Date().toISOString()})
+  });
+  await sbK('/kids_history', {
+    method:'POST', prefer:'return=minimal',
+    body: JSON.stringify({kenshi_id:kId, game_id:gameId, stars})
+  });
+  return newBadges;
+}
+
+// ══════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════
+const SENSEI = { user:'aKaPi', pass:'6577011656' };
+let kCurrentUser = null;
+
+async function kHandleLogin() {
+  const u=document.getElementById('k-login-user').value.trim();
+  const p=document.getElementById('k-login-pass').value;
+  const err=document.getElementById('k-login-err');
+  const btn=document.querySelector('#form-login-kids .btn-kids');
+  err.textContent=''; btn.textContent='Entrando...⏳'; btn.disabled=true;
+  try {
+    if(u===SENSEI.user && p===SENSEI.pass) {
+      kCurrentUser={role:'sensei',name:'Sensei'};
+      kShowSensei(); return;
+    }
+    const kid = await dbGetKid(u);
+    if(!kid){err.textContent='❌ Usuario no encontrado';err.style.display='block'; return;}
+    if(kid.password_hash!==p){err.textContent='❌ Contraseña incorrecta';err.style.display='block'; return;}
+    if(kid.banned){err.textContent='🚫 Tu Sensei ha bloqueado tu acceso';err.style.display='block'; return;}
+    await sbK(`/kenshi_kids?id=eq.${kid.id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({last_login_at:new Date().toISOString(),login_count:(kid.login_count||0)+1})});
+    kCurrentUser={...kid};
+    kShowMain();
+  } catch(e){ err.textContent='❌ Error de conexión'; }
+  finally{ btn.textContent='¡Entrar! 🥋'; btn.disabled=false; }
+}
+
+async function kHandleRegister() {
+  const u=document.getElementById('k-reg-user').value.trim();
+  const name=document.getElementById('k-reg-name').value.trim();
+  const age=parseInt(document.getElementById('k-reg-age').value)||0;
+  const p=document.getElementById('k-reg-pass').value;
+  const err=document.getElementById('k-reg-err');
+  const btn=document.querySelector('#form-register-kids .btn-kids');
+  err.textContent='';
+  if(!u||!name||!p){err.textContent='❌ Rellena todos los campos';err.style.display='block';return;}
+  if(u.length<2){err.textContent='❌ El nombre necesita al menos 2 letras';err.style.display='block';return;}
+  if(p.length<4){err.textContent='❌ La contraseña necesita al menos 4 letras';err.style.display='block';return;}
+  if(u===SENSEI.user){err.textContent='❌ Ese nombre no está disponible';err.style.display='block';return;}
+  btn.textContent='Registrando...⏳'; btn.disabled=true;
+  try {
+    const ex=await dbGetKid(u);
+    if(ex){err.textContent='❌ Ese nombre ya existe, prueba otro';err.style.display='block';return;}
+    const belt=document.getElementById('k-reg-belt')?.value||'blanco';
+    const rows=await sbK('/kenshi_kids',{method:'POST',body:JSON.stringify({username:u,name,password_hash:p,age,belt})});
+    const kid=rows&&rows[0];
+    if(!kid) throw new Error('No se pudo crear');
+    await sbK('/kids_stats',{method:'POST',prefer:'return=minimal',body:JSON.stringify({kenshi_id:kid.id,total_games:0,total_stars:0,badges:[]})});
+    kCurrentUser={...kid};
+    kShowMain();
+  } catch(e){ err.textContent='❌ Error al registrar, inténtalo de nuevo'; }
+  finally{ btn.textContent='¡Unirme al dojo! 🎉'; btn.disabled=false; }
+}
+
+function kLogout() { kCurrentUser=null; kShowLogin(); }
+function kShowLogin() { kShowScreen('screen-login'); document.getElementById('form-login-kids').style.display=''; document.getElementById('form-register-kids').style.display='none'; }
+function kShowRegister() { document.getElementById('form-login-kids').style.display='none'; document.getElementById('form-register-kids').style.display=''; }
+
+// ══════════════════════════════════════════════════
+// SCREENS
+// ══════════════════════════════════════════════════
+function kShowScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function kShowMain() { kShowScreen('screen-main-kids'); kRenderMain(); }
+function kShowSensei() { kShowScreen('screen-sensei-kids'); kRenderSensei(); }
+function kExitGame() { kShowMain(); }
+
+// ══════════════════════════════════════════════════
+// BELT SYSTEM
+// ══════════════════════════════════════════════════
+const BELTS = {
+  'blanco':         {label:'Blanco',         color:'#f5f5f5', border:'#bdbdbd', emoji:'🤍'},
+  'blanco-amarillo':{label:'Blanco/Amarillo', color:'linear-gradient(90deg,#f5f5f5 50%,#ffd600 50%)', border:'#fdd835', emoji:'🤍💛', cssColor:'#f5f5f5'},
+  'amarillo':       {label:'Amarillo',        color:'#fdd835', border:'#f9a825', emoji:'💛'},
+  'amarillo-naranja':{label:'Amarillo/Naranja',color:'linear-gradient(90deg,#fdd835 50%,#ff7043 50%)',border:'#ff7043',emoji:'💛🧡',cssColor:'#fdd835'},
+  'naranja':        {label:'Naranja',          color:'#ff7043', border:'#e64a19', emoji:'🧡'},
+  'naranja-verde':  {label:'Naranja/Verde',    color:'linear-gradient(90deg,#ff7043 50%,#4caf50 50%)',border:'#43a047',emoji:'🧡💚',cssColor:'#ff7043'},
+  'verde':          {label:'Verde',            color:'#43a047', border:'#2e7d32', emoji:'💚'},
+  'verde-azul':     {label:'Verde/Azul',       color:'linear-gradient(90deg,#43a047 50%,#1e88e5 50%)',border:'#1e88e5',emoji:'💚💙',cssColor:'#43a047'},
+  'azul':           {label:'Azul',             color:'#1e88e5', border:'#1565c0', emoji:'💙'},
+  'azul-marron':    {label:'Azul/Marrón',      color:'linear-gradient(90deg,#1e88e5 50%,#795548 50%)',border:'#795548',emoji:'💙🤎',cssColor:'#1e88e5'},
+  'marron':         {label:'Marrón',           color:'#795548', border:'#4e342e', emoji:'🤎'},
+};
+const BELT_ORDER = ['blanco','blanco-amarillo','amarillo','amarillo-naranja','naranja','naranja-verde','verde','verde-azul','azul','azul-marron','marron'];
+
+const GAME_NAMES = {
+  'memory':     '¡Memory Japonés!',
+  'quiz':       '¡Preguntas Rápidas!',
+  'buenas':     '¡Buen Kenshi!',
+  'belt-order': '¡Ordena los Cinturones!',
+  'kanji':      '¡Adivina el Kanji!',
+  'count-jp':   '¡Cuenta en Japonés!',
+  'body-point': '¡Señala el Keimyaku!',
+  'story':      '¡La Historia de Kaiso!',
+  'saludos':    '¡Saluda como un Kenshi!',
+  'camino':     '¡El Camino del Kenshi!',
+};
+
+// ══════════════════════════════════════════════════
+// RENDER MAIN
+// ══════════════════════════════════════════════════
+async function kRenderMain() {
+  const u=kCurrentUser;
+  const belt=BELTS[u.belt]||BELTS['blanco'];
+  document.getElementById('k-welcome-name').textContent=u.name;
+  document.getElementById('k-top-name').textContent=u.username.toUpperCase();
+  document.getElementById('k-belt-name').textContent=belt.label;
+  document.getElementById('k-belt-dot').style.cssText=`background:${belt.color};border:2px solid ${belt.border}`;
+
+  document.getElementById('k-stars-row').innerHTML=`<div class="star-card"><div class="star-num">⏳</div><div class="star-label">Cargando...</div></div>`;
+
+  try {
+    const stats=await dbGetKidStats(u.id);
+    document.getElementById('k-stars-row').innerHTML=`
+      <div class="star-card"><div class="star-num">${stats.total_games||0}</div><div class="star-label">🎮 Partidas</div></div>
+      <div class="star-card"><div class="star-num">${stats.total_stars||0}</div><div class="star-label">⭐ Estrellas</div></div>
+      <div class="star-card"><div class="star-num">${(stats.badges||[]).length}</div><div class="star-label">🏅 Insignias</div></div>
+    `;
+    document.getElementById('k-badges-row').innerHTML=(stats.badges||[]).map(b=>`<div class="badge">${b}</div>`).join('');
+  } catch(e) {
+    document.getElementById('k-stars-row').innerHTML=`<div class="star-card"><div class="star-num">0</div><div class="star-label">⭐ Estrellas</div></div>`;
+  }
+
+  const games=[
+    {id:'memory',  emoji:'🃏', name:'Memory Japonés',   desc:'Empareja palabras y dibujos', color:'#e3f2fd'},
+    {id:'quiz',    emoji:'❓', name:'Preguntas Rápidas', desc:'¿Sabes la respuesta?',        color:'#fff8e1'},
+    {id:'buenas',  emoji:'❤️', name:'¡Buen Kenshi!', desc:'Ayuda en casa, en el cole y con tus amigos', color:'#fce4ec'},
+    {id:'saludos', emoji:'🙏', name:'¡Saluda como un Kenshi!', desc:'¿Sabes qué decir en el dojo?', color:'#f3e5f5'},
+    {id:'count-jp',emoji:'🔢', name:'Cuenta en Japonés', desc:'Ichi, ni, san...', color:'#e8f5e9'},
+    {id:'body-point',emoji:'👆',name:'¿Dónde está?',   desc:'Señala el punto en el cuerpo', color:'#fff3e0'},
+    {id:'story',   emoji:'📖', name:'La Historia de Kaiso', desc:'¡Descubre el Shorinji Kempo!', color:'#e0f7fa'},
+    {id:'camino',  emoji:'🗺️', name:'¡El Camino del Kenshi!', desc:'¡Avanza por el tablero respondiendo!', color:'#f1f8e9'},
+  ];
+
+  document.getElementById('k-games-grid').innerHTML=games.map(g=>`
+    <div class="game-card-kids" onclick="kStartGame('${g.id}')" style="border-color:${g.color}; background:${g.color}15;">
+      <span class="game-emoji">${g.emoji}</span>
+      <h3>${g.name}</h3>
+      <p>${g.desc}</p>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════
+// GAME ENGINE
+// ══════════════════════════════════════════════════
+let kGame={};
+
+function kShuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function kStartGame(id) {
+  kShowScreen('screen-game-kids');
+  kGame={id,score:0,total:0,current:0,stars:0};
+  document.getElementById('k-game-title').textContent=GAME_NAMES[id]||id;
+  document.getElementById('k-progress').style.width='0%';
+  document.getElementById('k-score').textContent='⭐ 0';
+  switch(id) {
+    case 'memory':     kSetupMemory(); break;
+    case 'quiz':       kSetupQuiz(); break;
+    case 'buenas':     kSetupBuenas(); break;
+    case 'belt-order': kSetupBeltOrder(); break;
+    case 'saludos':    kSetupSaludos(); break;
+    case 'count-jp':   kSetupCountJP(); break;
+    case 'body-point': kSetupBodyPoint(); break;
+    case 'story':      kSetupStory(); break;
+    case 'camino':     kSetupCamino(); break;
+  }
+}
+
+function kUpdateProgress() {
+  const pct=kGame.total>0?(kGame.current/kGame.total)*100:0;
+  document.getElementById('k-progress').style.width=pct+'%';
+  document.getElementById('k-score').textContent='⭐ '+kGame.score;
+}
+
+// ─── QUIZ ───
+const QUIZ_KIDS = [
+  {q:'¿Cómo se dice "uno" en japonés?', a:'Ichi', opts:['Ichi','Ni','San','Shi'], emoji:'1️⃣', explain:'¡Ichi (一) es el número 1 en japonés!'},
+  {q:'¿Cómo se dice "empezar" en el dojo?', a:'Hajime', opts:['Hajime','Yame','Rei','Kiai'], emoji:'🎯', explain:'¡Hajime (始め) significa "empezar"!'},
+  {q:'¿Qué significa "Yame"?', a:'Parar', opts:['Parar','Empezar','Saludo','Grito'], emoji:'✋', explain:'¡Yame (止め) significa "parar"!'},
+  {q:'¿Cómo se llama el saludo con las palmas juntas?', a:'Gassho Rei', opts:['Gassho Rei','Kiai','Seiza','Zazen'], emoji:'🙏', explain:'¡Gassho Rei (合掌礼) es el saludo especial del Shorinji Kempo!'},
+  {q:'¿Qué es un "Kenshi"?', a:'Un practicante de Shorinji Kempo', opts:['Un practicante de Shorinji Kempo','Un cinturón negro','El profesor del dojo','El dojo'], emoji:'🥋', explain:'¡Kenshi (拳士) significa "samurai del puño" — ¡así se llama a todos los que practican!'},
+  {q:'¿Qué significa "Sensei"?', a:'El que nació antes — el maestro', opts:['El que nació antes — el maestro','El más fuerte','El más rápido','El fundador'], emoji:'👨‍🏫', explain:'¡Sensei (先生) significa literalmente "el que nació antes" — ¡tu maestro!'},
+  {q:'¿Cómo se dice "gracias" al terminar el entrenamiento?', a:'Arigato gozaimashita', opts:['Arigato gozaimashita','O-negai shimasu','Hajime','Yame'], emoji:'🙏', explain:'¡Arigato gozaimashita (ありがとうございました) significa "muchas gracias"!'},
+  {q:'¿Qué es el Kiai?', a:'El grito de espíritu', opts:['El grito de espíritu','Un tipo de golpe','Una caída','Una postura'], emoji:'😤', explain:'¡El Kiai (気合) es el grito que usamos para concentrar nuestra energía!'},
+  {q:'¿Qué significa "Seiza"?', a:'Sentarse en posición japonesa (arrodillado)', opts:['Sentarse en posición japonesa (arrodillado)','Levantarse','Empezar a entrenar','Saludar al sensei'], emoji:'🧘', explain:'¡Seiza (正座) es la postura formal de sentarse sobre los talones!'},
+  {q:'¿Quién fundó el Shorinji Kempo?', a:'Doshin So (Kaiso)', opts:['Doshin So (Kaiso)','Bodhidharma','Tameo Mizuno','El Buda'], emoji:'⛩️', explain:'¡Doshin So (宗道臣), también llamado Kaiso, creó el Shorinji Kempo en 1947!'},
+  {q:'¿Qué significa "Tsuki"?', a:'Golpe de puño', opts:['Golpe de puño','Patada','Bloqueo','Caída'], emoji:'👊', explain:'¡Tsuki (突き) es el golpe de puño!'},
+  {q:'¿Qué significa "Keri"?', a:'Patada', opts:['Patada','Golpe de puño','Bloqueo','Liberación'], emoji:'🦵', explain:'¡Keri (蹴り) es la patada!'},
+  {q:'¿Cómo se dice "tres" en japonés?', a:'San', opts:['San','Ni','Go','Ichi'], emoji:'3️⃣', explain:'¡San (三) es el número 3 en japonés!'},
+  {q:'¿Qué es el "Gi"?', a:'El traje blanco de entrenamiento', opts:['El traje blanco de entrenamiento','Un tipo de golpe','El cinturón','La colchoneta'], emoji:'👘', explain:'¡El Gi (着) es el traje blanco que llevamos en el dojo!'},
+  {q:'¿Qué es el "Samu"?', a:'Las tareas de limpieza del dojo', opts:['Las tareas de limpieza del dojo','Un tipo de meditación','Un golpe especial','El calentamiento'], emoji:'🧹', explain:'¡El Samu (作務) son las tareas de limpieza — ¡todos ayudamos a preparar el dojo!'},
+  {q:'¿Cómo se llama la colchoneta del dojo?', a:'Tatami', opts:['Tatami','Seiza','Kamae','Dojo'], emoji:'🟩', explain:'¡El Tatami (畳) es la colchoneta verde donde entrenamos!'},
+  {q:'¿Qué significa "Dojo"?', a:'El lugar donde practicamos', opts:['El lugar donde practicamos','El cinturón','El maestro','El traje'], emoji:'🏯', explain:'¡El Dojo (道場) significa literalmente "lugar del camino" — ¡donde entrenamos!'},
+  {q:'¿En qué año se creó el Shorinji Kempo?', a:'1947', opts:['1947','1960','1980','1935'], emoji:'📅', explain:'¡El Shorinji Kempo nació en 1947 en Japón, después de la Segunda Guerra Mundial!'},
+  {q:'¿Qué significa "Migi"?', a:'Derecha', opts:['Derecha','Izquierda','Arriba','Abajo'], emoji:'👉', explain:'¡Migi (右) significa derecha!'},
+  {q:'¿Qué significa "Hidari"?', a:'Izquierda', opts:['Izquierda','Derecha','Adelante','Atrás'], emoji:'👈', explain:'¡Hidari (左) significa izquierda!'},
+  {q:'¿Cuál es el primer cinturón en el Shorinji Kempo?', a:'Blanco/Amarillo (5º Kyu)', opts:['Blanco/Amarillo (5º Kyu)','Negro (1º Dan)','Verde (3º Kyu)','Azul (2º Kyu)'], emoji:'🤍', explain:'¡El primer grado es el 5º Kyu, con cinturón blanco y amarillo!'},
+  {q:'¿Qué significa "Uke"?', a:'Bloqueo o defensa', opts:['Bloqueo o defensa','Ataque','Caída','Saludo'], emoji:'🛡️', explain:'¡Uke (受け) significa bloqueo — ¡defenderse del ataque!'},
+  {q:'¿Cómo se dice "cinco" en japonés?', a:'Go', opts:['Go','Roku','Shi','San'], emoji:'5️⃣', explain:'¡Go (五) es el número 5 en japonés!'},
+  {q:'¿Qué es el "Zazen"?', a:'Meditación sentada', opts:['Meditación sentada','Un tipo de patada','El saludo','El calentamiento'], emoji:'🧘', explain:'¡El Zazen (座禅) es la meditación sentada que practicamos en el dojo!'},
+  {q:'¿Qué significa "Kamae"?', a:'Postura de guardia', opts:['Postura de guardia','Golpe fuerte','Caída segura','Saludo japonés'], emoji:'🥊', explain:'¡Kamae (構え) es la postura de guardia que adoptamos para defendernos!'},
+];
+
+function kSetupQuiz() {
+  const questions = kShuffle(QUIZ_KIDS).slice(0,8);
+  kGame.questions=questions; kGame.total=questions.length; kGame.current=0; kGame.score=0;
+  kRenderQuiz();
+}
+
+function kRenderQuiz() {
+  const q=kGame.questions[kGame.current];
+  if(!q){kShowResults();return;}
+  kUpdateProgress();
+  const opts=kShuffle(q.opts);
+  kGame.correctIndex=opts.indexOf(q.a);
+  const letters=['A','B','C','D'];
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-num-kids">Pregunta ${kGame.current+1} de ${kGame.total}</div>
+      <div class="q-emoji-big">${q.emoji}</div>
+      <div class="q-text-kids">${q.q}</div>
+    </div>
+    <div class="options-kids">
+      ${opts.map((o,i)=>`
+        <button class="option-kids" onclick="kCheckQuiz(this,${i})">
+          <span class="option-letter">${letters[i]}</span>${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback-kids" id="k-feedback"></div>
+    <div id="k-next-wrap" style="display:none;text-align:center;margin-top:16px;">
+      <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextQuiz()">
+        ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+      </button>
+    </div>
+  `;
+}
+
+function kCheckQuiz(btn, idx) {
+  if(kGame.answered) return;
+  kGame.answered=true;
+  const q=kGame.questions[kGame.current];
+  const correct=idx===kGame.correctIndex;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===kGame.correctIndex) b.classList.add('correct');
+  });
+  if(!correct) btn.classList.add('wrong');
+  else { kGame.score++; kSpawnConfetti(); }
+  const fb=document.getElementById('k-feedback');
+  fb.style.display='block';
+  fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.innerHTML=(correct?'✅ ¡Correcto! ':'❌ ')+q.explain;
+  document.getElementById('k-next-wrap').style.display='block';
+  kUpdateProgress();
+}
+
+function kNextQuiz() {
+  kGame.current++; kGame.answered=false;
+  if(kGame.current>=kGame.total){kShowResults();return;}
+  kRenderQuiz();
+}
+
+// ─── MEMORY ───
+// Memory pairs: emoji image card + word card
+const MEMORY_PAIRS = [
+  {word:'👊 Tsuki',  meaning:'Golpe de puño'},
+  {word:'🦵 Keri',   meaning:'Patada'},
+  {word:'🛡️ Uke',    meaning:'Bloqueo'},
+  {word:'🙏 Rei',    meaning:'Saludo'},
+  {word:'▶️ Hajime', meaning:'¡Empezar!'},
+  {word:'✋ Yame',   meaning:'¡Parar!'},
+  {word:'😤 Kiai',   meaning:'Grito de espíritu'},
+  {word:'🧎 Seiza',  meaning:'Sentarse formal'},
+  {word:'🥋 Kenshi', meaning:'Practicante'},
+  {word:'👨‍🏫 Sensei', meaning:'El maestro'},
+  {word:'🏯 Dojo',   meaning:'Lugar de entrenamiento'},
+  {word:'🧹 Samu',   meaning:'Limpiar el dojo'},
+  {word:'🤝 O-negai',meaning:'Por favor'},
+  {word:'🎉 Arigato',meaning:'¡Gracias!'},
+  {word:'1️⃣ Ichi',  meaning:'Número 1'},
+  {word:'2️⃣ Ni',    meaning:'Número 2'},
+  {word:'3️⃣ San',   meaning:'Número 3'},
+  {word:'👉 Migi',   meaning:'Derecha'},
+  {word:'👈 Hidari', meaning:'Izquierda'},
+  {word:'⛩️ Kaiso',  meaning:'El fundador'},
+];
+
+function kSetupMemory() {
+  const pairs=kShuffle(MEMORY_PAIRS).slice(0,6);
+  kGame.pairs=pairs;
+  kGame.flipped=[]; kGame.matched=[];
+  kGame.moves=0; kGame.total=pairs.length; kGame.score=0;
+  kRenderMemory();
+}
+
+function kRenderMemory() {
+  const pairs=kGame.pairs;
+  const cards=kShuffle([
+    ...pairs.map((p,i)=>({id:i,type:'word',text:p.word,pair:i})),
+    ...pairs.map((p,i)=>({id:i+pairs.length,type:'meaning',text:p.meaning,pair:i}))
+  ]);
+  kGame.cards=cards;
+  const cols=4;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids" style="padding:14px 16px; text-align:center;">
+      <div class="q-emoji-big" style="font-size:36px;margin-bottom:6px;">🃏</div>
+      <div class="q-text-kids" style="font-size:17px;">¡Empareja cada imagen con su nombre!</div>
+      <div style="font-size:13px; color:var(--muted); margin-top:4px; font-weight:600;">Toca dos cartas para emparejarlas</div>
+    </div>
+    <div class="memory-grid" style="grid-template-columns:repeat(${cols},1fr); gap:8px;" id="k-memory-grid">
+      ${cards.map((c,i)=>`
+        <div class="memory-card-kids" id="mc-${i}" onclick="kFlipMemory(${i})">
+          <span class="back" style="font-size:24px;">❓</span>
+          <span class="front" style="font-size:${c.type==='word'?'20px':'13px'}; font-weight:800; text-align:center; padding:4px; line-height:1.3; color:var(--ink2);">${c.text}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div id="k-memory-msg" style="text-align:center; font-size:15px; font-weight:800; color:var(--muted); margin-top:12px;">
+      Parejas encontradas: 0 / ${pairs.length}
+    </div>
+  `;
+}
+
+function kFlipMemory(idx) {
+  if(kGame.flipped.length>=2) return;
+  if(kGame.flipped.includes(idx)) return;
+  if(kGame.matched.some(m=>m===kGame.cards[idx].id)) return;
+  kGame.flipped.push(idx);
+  document.getElementById(`mc-${idx}`).classList.add('flipped');
+  if(kGame.flipped.length===2) {
+    kGame.moves++;
+    const [a,b]=kGame.flipped;
+    const ca=kGame.cards[a], cb=kGame.cards[b];
+    if(ca.pair===cb.pair && ca.type!==cb.type) {
+      // Match!
+      setTimeout(()=>{
+        document.getElementById(`mc-${a}`).classList.add('matched');
+        document.getElementById(`mc-${b}`).classList.add('matched');
+        kGame.matched.push(ca.id, cb.id);
+        kGame.score++;
+        kGame.flipped=[];
+        kSpawnConfetti();
+        document.getElementById('k-memory-msg').textContent=`Parejas encontradas: ${kGame.score} / ${kGame.pairs.length}`;
+        if(kGame.score>=kGame.pairs.length) setTimeout(kShowResults, 800);
+      }, 400);
+    } else {
+      setTimeout(()=>{
+        document.getElementById(`mc-${a}`).classList.remove('flipped');
+        document.getElementById(`mc-${b}`).classList.remove('flipped');
+        kGame.flipped=[];
+      }, 900);
+    }
+  }
+}
+
+// ─── BELT ORDER — UP/DOWN BUTTONS (no drag, mobile friendly) ───
+function kSetupBeltOrder() {
+  // Use a smaller subset for kids to avoid scroll confusion
+  const subset = kShuffle([...BELT_ORDER]);
+  kGame.userOrder = subset;
+  kGame.total=1; kGame.current=0;
+  kRenderBeltOrder();
+}
+
+function kRenderBeltOrder() {
+  const order = kGame.userOrder;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-emoji-big">🥋</div>
+      <div class="q-text-kids">¡Ordena los cinturones del primero al último!</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px;font-weight:600;">Usa las flechas ⬆️⬇️ para mover cada cinturón</div>
+    </div>
+    <div id="k-belt-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+      ${order.map((b,i)=>{
+        const belt=BELTS[b];
+        const bgStyle=belt.color.startsWith('linear')?belt.color:belt.color;
+        return `
+        <div style="display:flex;align-items:center;gap:10px;background:white;border-radius:14px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:2px solid #e8d5b0;">
+          <div style="width:44px;height:16px;border-radius:8px;background:${bgStyle};border:2px solid ${belt.border};flex-shrink:0;"></div>
+          <span style="font-size:18px;">${belt.emoji}</span>
+          <span style="font-size:15px;font-weight:800;color:var(--ink2);flex:1;">${belt.label}</span>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <button onclick="kMoveBelt(${i},-1)" style="width:34px;height:34px;border-radius:8px;border:2px solid #c9a84c;background:#fff8e1;font-size:16px;cursor:pointer;line-height:1;" ${i===0?'disabled style="opacity:0.3;cursor:default;"':''}>⬆️</button>
+            <button onclick="kMoveBelt(${i},1)" style="width:34px;height:34px;border-radius:8px;border:2px solid #c9a84c;background:#fff8e1;font-size:16px;cursor:pointer;line-height:1;" ${i===order.length-1?'disabled style="opacity:0.3;cursor:default;"':''}>⬇️</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <button class="btn-kids btn-green" onclick="kCheckBeltOrder()">¡Comprobar! ✅</button>
+    <div class="feedback-kids" id="k-belt-feedback" style="margin-top:12px;"></div>
+  `;
+}
+
+function kMoveBelt(i, dir) {
+  const arr = kGame.userOrder;
+  const j = i + dir;
+  if(j<0||j>=arr.length) return;
+  [arr[i],arr[j]]=[arr[j],arr[i]];
+  kGame.userOrder=arr;
+  kRenderBeltOrder();
+}
+
+function kRestartBeltOrder(){ kStartGame('belt-order'); }
+function kCheckBeltOrder(){
+  const correct=JSON.stringify(kGame.userOrder)===JSON.stringify(BELT_ORDER);
+  kGame.score=correct?1:0;
+  kGame.total=1;
+  const fb=document.getElementById('k-belt-feedback');
+  fb.style.display='block';
+  if(correct){
+    fb.className='feedback-kids correct';
+    fb.innerHTML='✅ ¡Perfecto! ¡Conoces todos los cinturones! 🏆';
+    kSpawnConfetti(); kSpawnConfetti(); kSpawnConfetti();
+    setTimeout(kShowResults, 2000);
+  } else {
+    fb.className='feedback-kids wrong';
+    const correctLabels = BELT_ORDER.map(b=>BELTS[b].emoji+' '+BELTS[b].label).join(' → ');
+    fb.innerHTML=`❌ ¡Casi! El orden correcto es:<br><span style="font-size:13px;line-height:1.8;">${correctLabels}</span>`;
+    // Don't auto-advance, let them try again by scrolling
+    setTimeout(()=>{
+      const retryDiv = document.createElement('div');
+      retryDiv.style.cssText = 'text-align:center;margin-top:12px;';
+      retryDiv.innerHTML = '<button class="btn-kids btn-orange" style="max-width:200px;" onclick="kRestartBeltOrder()">🔄 Intentar de nuevo</button>';
+      retryDiv.innerHTML += '<button class="btn-kids btn-blue" style="max-width:200px;margin-top:8px;" onclick="kExitGame()">← Volver</button>';
+      document.getElementById('k-belt-feedback').after(retryDiv);
+    },100);
+  }
+}
+
+// ─── KANJI ───
+// ─── SALUDOS COMO UN KENSHI ───
+const SALUDOS_DATA = [
+  {
+    scene:'🏯', situation:'Llegas al dojo y te encuentras con tu Sensei antes de entrenar.',
+    q:'¿Qué le dices?',
+    opts:['¡Hola!', 'O-negai shimasu 🙏', '¡Arigato gozaimashita!', 'Yame'],
+    correct:1, explain:'"O-negai shimasu" significa "por favor" — lo usamos al comenzar a entrenar con alguien. ¡Es la forma correcta de saludar al Sensei antes de la clase!'
+  },
+  {
+    scene:'🎉', situation:'Terminas de entrenar con tu compañero y el Sensei dice "Yame".',
+    q:'¿Qué le dices a tu compañero?',
+    opts:['¡Hasta luego!', 'Hajime', 'Arigato gozaimashita 🙏', 'Naore'],
+    correct:2, explain:'"Arigato gozaimashita" significa "muchas gracias" — lo decimos al TERMINAR el entrenamiento. ¡Siempre hay que agradecer a nuestro compañero!'
+  },
+  {
+    scene:'🥋', situation:'El Sensei está a punto de empezar el ejercicio y dice "¡Preparados!"',
+    q:'¿Qué dice el Sensei para que comencéis?',
+    opts:['Yame', 'Hajime ▶️', 'Rei', 'Naore'],
+    correct:1, explain:'"Hajime" significa "¡Empezar!" — es la señal del Sensei para comenzar el ejercicio. ¡Cuando escuches Hajime, a entrenar!'
+  },
+  {
+    scene:'🛑', situation:'Estás haciendo randori y el Sensei quiere que os detengáis inmediatamente.',
+    q:'¿Qué palabra grita el Sensei?',
+    opts:['Hajime', 'Kiai', 'Yame ✋', 'Seiza'],
+    correct:2, explain:'"Yame" significa "¡Parar!" — cuando el Sensei grita Yame hay que parar al instante. ¡Es muy importante escuchar esta palabra!'
+  },
+  {
+    scene:'🙏', situation:'El Sensei dice "Rei" al inicio de la clase. Todos estáis en fila.',
+    q:'¿Qué hacéis cuando el Sensei dice "Rei"?',
+    opts:['Saltar', 'Hacer el Gassho Rei (palmas juntas) 🙏', 'Sentarse', 'Gritar Kiai'],
+    correct:1, explain:'"Rei" es la señal para hacer el Gassho Rei — juntar las palmas frente al pecho. Es el saludo especial del Shorinji Kempo que significa que todos somos iguales!'
+  },
+  {
+    scene:'🧘', situation:'El Sensei dice "Seiza" al principio de la clase.',
+    q:'¿Qué postura adoptas?',
+    opts:['Te pones de pie', 'Te sientas sobre los talones con la espalda recta 🧎', 'Te tumbas en el suelo', 'Cruzas los brazos'],
+    correct:1, explain:'"Seiza" es la posición formal de sentarse en el dojo — sobre los talones, espalda recta. ¡Muestra respeto y atención!'
+  },
+  {
+    scene:'🏃', situation:'El Sensei dice "Kiritsu" después del zazen.',
+    q:'¿Qué significa "Kiritsu"?',
+    opts:['Sentarse', 'Tumbarse', 'Levantarse 🧍', 'Hacer una reverencia'],
+    correct:2, explain:'"Kiritsu" significa "¡Levantarse!" — es la orden para ponerse en pie. Se usa mucho al pasar del zazen al entrenamiento.'
+  },
+  {
+    scene:'🤝', situation:'Vas a empezar a practicar una técnica con tu compañero por primera vez.',
+    q:'¿Qué le dices antes de empezar?',
+    opts:['¡Vamos!', 'O-negai shimasu 🙏', 'Arigato gozaimashita', '¡Ya!'],
+    correct:1, explain:'"O-negai shimasu" — se dice ANTES de empezar a practicar con un compañero. ¡Es una señal de respeto mutuo!'
+  },
+  {
+    scene:'😤', situation:'Vas a golpear el makiwara (tabla de entrenamiento) con toda tu energía.',
+    q:'¿Qué haces en el momento del impacto para concentrar tu energía?',
+    opts:['Soplar fuerte', 'Gritar el Kiai 💥', 'Cerrar los ojos', 'Contener la respiración'],
+    correct:1, explain:'¡El Kiai! Es el grito de espíritu que concentra toda tu energía en el momento del golpe. ¡HI-YAA!'
+  },
+  {
+    scene:'🧹', situation:'Llegas al dojo antes de que empiece la clase y hay que prepararlo.',
+    q:'¿Cómo se llama la tarea de limpiar y preparar el dojo?',
+    opts:['Randori', 'Zazen', 'Samu 🧹', 'Kihon'],
+    correct:2, explain:'"Samu" son las tareas de preparación del dojo. ¡Todo el mundo ayuda, desde el principiante hasta el Sensei! Es parte del entrenamiento.'
+  },
+];
+
+function kSetupSaludos() {
+  const qs = kShuffle([...SALUDOS_DATA]).slice(0,7);
+  kGame.questions=qs; kGame.total=qs.length; kGame.current=0; kGame.score=0;
+  kRenderSaludos();
+}
+
+function kRenderSaludos() {
+  const q=kGame.questions[kGame.current];
+  if(!q){kShowResults();return;}
+  kUpdateProgress();
+  const opts=q.opts; // keep order for saludos (deliberate)
+  kGame.correctSIdx=q.correct;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-num-kids">Situación ${kGame.current+1} de ${kGame.total}</div>
+      <div style="font-size:52px;margin:8px 0;">${q.scene}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--muted);margin-bottom:10px;font-style:italic;">"${q.situation}"</div>
+      <div class="q-text-kids" style="font-size:19px;">${q.q}</div>
+    </div>
+    <div class="options-kids">
+      ${opts.map((o,i)=>`
+        <button class="option-kids" onclick="kCheckSaludos(this,${i})">
+          <span class="option-letter">${String.fromCharCode(65+i)}</span>${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback-kids" id="k-fb-sal"></div>
+    <div id="k-next-sal" style="display:none;text-align:center;margin-top:12px;">
+      <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextSaludos()">
+        ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+      </button>
+    </div>
+  `;
+}
+
+function kCheckSaludos(btn,idx){
+  if(kGame.saludosAnswered) return; kGame.saludosAnswered=true;
+  const correct=idx===kGame.correctSIdx;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{b.disabled=true; if(i===kGame.correctSIdx) b.classList.add('correct');});
+  if(!correct) btn.classList.add('wrong');
+  else { kGame.score++; kSpawnConfetti(); }
+  const fb=document.getElementById('k-fb-sal');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.innerHTML=(correct?'✅ ':'❌ ')+kGame.questions[kGame.current].explain;
+  document.getElementById('k-next-sal').style.display='block';
+  kUpdateProgress();
+}
+function kNextSaludos(){ kGame.current++; kGame.saludosAnswered=false; if(kGame.current>=kGame.total){kShowResults();return;} kRenderSaludos(); }
+
+// ─── COUNT JP ───
+const JP_NUMBERS = [
+  {num:1,jp:'一',romaji:'Ichi'},{num:2,jp:'二',romaji:'Ni'},
+  {num:3,jp:'三',romaji:'San'},{num:4,jp:'四',romaji:'Shi/Yon'},
+  {num:5,jp:'五',romaji:'Go'},{num:6,jp:'六',romaji:'Roku'},
+  {num:7,jp:'七',romaji:'Shichi/Nana'},{num:8,jp:'八',romaji:'Hachi'},
+  {num:9,jp:'九',romaji:'Ku/Kyuu'},{num:10,jp:'十',romaji:'Juu'},
+];
+
+function kSetupCountJP() {
+  kGame.questions=kShuffle(JP_NUMBERS).slice(0,8).map(n=>({
+    q:`¿Cuánto es ${n.jp} (${n.romaji})?`,
+    a:String(n.num),
+    opts:kShuffle([n.num,...kShuffle(JP_NUMBERS.filter(x=>x.num!==n.num).slice(0,3).map(x=>x.num))]).map(String),
+    kanji:n.jp, romaji:n.romaji, emoji:'🔢'
+  }));
+  kGame.total=kGame.questions.length; kGame.current=0; kGame.score=0;
+  kRenderCountJP();
+}
+
+function kRenderCountJP(){
+  const q=kGame.questions[kGame.current];
+  if(!q){kShowResults();return;}
+  kUpdateProgress();
+  const opts=q.opts;
+  kGame.correctCIdx=opts.indexOf(q.a);
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-num-kids">Número ${kGame.current+1} de ${kGame.total}</div>
+      <div class="count-display">${q.kanji}</div>
+      <div class="count-romaji">${q.romaji}</div>
+      <div class="q-text-kids">¿A qué número corresponde?</div>
+    </div>
+    <div class="options-kids">
+      ${opts.map((o,i)=>`
+        <button class="option-kids" onclick="kCheckCount(this,${i})" style="justify-content:center; font-size:24px;">
+          ${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback-kids" id="k-fb-count"></div>
+    <div id="k-next-count" style="display:none;text-align:center;margin-top:12px;">
+      <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextCount()">
+        ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+      </button>
+    </div>
+  `;
+}
+function kCheckCount(btn,idx){
+  if(kGame.countAnswered) return; kGame.countAnswered=true;
+  const correct=idx===kGame.correctCIdx;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{b.disabled=true; if(i===kGame.correctCIdx) b.classList.add('correct');});
+  if(!correct) btn.classList.add('wrong');
+  else { kGame.score++; kSpawnConfetti(); }
+  const fb=document.getElementById('k-fb-count');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.textContent=correct?'✅ ¡Correcto!':'❌ Era: '+kGame.questions[kGame.current].a;
+  document.getElementById('k-next-count').style.display='block';
+  kUpdateProgress();
+}
+function kNextCount(){ kGame.current++; kGame.countAnswered=false; if(kGame.current>=kGame.total){kShowResults();return;} kRenderCountJP(); }
+
+// ─── BODY POINT — tap on diagram ───
+// Points defined as % position on the SVG body diagram
+// Full keimyaku pool — game picks 6 random each time
+const ALL_BODY_POINTS = [
+  // HEAD & FACE
+  {name:'Suigetsu',  kanji:'水月', desc:'Plexo solar — debajo de las costillas, centro del cuerpo', emoji:'⭐', hint:'¡En el centro del cuerpo, debajo del pecho!',        cx:50, cy:53, zona:'Torso'},
+  {name:'Mikazuki',  kanji:'三日月',desc:'Luna creciente — en la barbilla, parte baja de la cara',  emoji:'🌙', hint:'¡En la cara, en la barbilla!',                        cx:50, cy:30, zona:'Cara'},
+  {name:'Tenchu',    kanji:'天柱', desc:'Pilar del cielo — en la nuca, parte posterior del cuello', emoji:'💫', hint:'¡En la NUCA, parte de atrás del cuello!',             cx:50, cy:22, zona:'Cuello'},
+  {name:'Sango',     kanji:'三江', desc:'En la sien — lateral de la cabeza, junto a la oreja',      emoji:'⚡', hint:'¡En el lateral izquierdo de la cabeza!',              cx:25, cy:17, zona:'Cabeza'},
+  {name:'Yongo',     kanji:'四江', desc:'En la sien derecha — lateral derecho de la cabeza',        emoji:'💥', hint:'¡En el lateral DERECHO de la cabeza!',               cx:75, cy:17, zona:'Cabeza'},
+  {name:'Hakusetsu', kanji:'白雪', desc:'Nieve blanca — en la mandíbula, parte baja de la mejilla', emoji:'❄️', hint:'¡En la mandíbula, debajo del pómulo izquierdo!',     cx:30, cy:27, zona:'Cara'},
+  {name:'Hyaku-e',   kanji:'百会', desc:'Cien reuniones — en lo alto de la cabeza, la coronilla',   emoji:'👑', hint:'¡En la parte más alta de la cabeza, la coronilla!',  cx:50, cy:5,  zona:'Cabeza'},
+  {name:'Shin-e',    kanji:'神恵', desc:'En la frente — zona central entre las cejas',              emoji:'🔮', hint:'¡En el centro de la frente, entre las cejas!',         cx:50, cy:12, zona:'Cara'},
+  // TORSO
+  {name:'Danchu',    kanji:'膻中', desc:'En el esternón — centro del pecho, entre los pectorales',  emoji:'❤️', hint:'¡En el centro del pecho!',                           cx:50, cy:65, zona:'Torso'},
+  {name:'Kinteki',   kanji:'金的', desc:'Parte inferior del abdomen, zona baja del vientre',        emoji:'🎯', hint:'¡En la parte baja del vientre!',                      cx:50, cy:78, zona:'Torso'},
+  {name:'Amon',      kanji:'亜門', desc:'Detrás de la cabeza — parte posterior baja del cráneo',    emoji:'🌀', hint:'¡Parte posterior baja del cráneo, justo detrás!',     cx:50, cy:8,  zona:'Cabeza'},
+  // ARMS & LEGS
+  {name:'Kekkai',    kanji:'結界', desc:'En la parte interior del muslo — pierna por dentro',       emoji:'🦵', hint:'¡En la parte interior del muslo!',                   cx:38, cy:148, zona:'Piernas'},
+  {name:'Rinkyu',    kanji:'臨泣', desc:'En el pie — parte superior del empeine',                  emoji:'🦶', hint:'¡En la parte de arriba del pie!',                     cx:40, cy:188, zona:'Pies'},
+  {name:'Sunmyaku',  kanji:'寸脈', desc:'En el cuello — zona lateral de la arteria carótida',      emoji:'🩸', hint:'¡En el lateral del cuello, donde notas el pulso!',    cx:42, cy:42, zona:'Cuello'},
+  {name:'Matsukaze', kanji:'松風', desc:'En la pantorrilla — parte posterior de la pierna baja',   emoji:'🌬️', hint:'¡En la pantorrilla, parte de atrás de la pierna!',   cx:37, cy:165, zona:'Piernas'},
+  {name:'Fushi',     kanji:'附子', desc:'En la rodilla — parte lateral exterior de la articulación',emoji:'🦾', hint:'¡En el lateral exterior de la rodilla!',              cx:36, cy:148, zona:'Piernas'},
+];
+
+// Pick 6 random points each game session
+let BODY_POINTS_KIDS = ALL_BODY_POINTS.slice(0,6);
+
+
+// SVG body diagram - improved kenshi figure with 6 points
+function kBodySVG(points, highlight, numberedMode) {
+  const pointsToShow = numberedMode ? points : points.filter(p => !highlight || p.name === highlight);
+  return `
+  <svg viewBox="0 0 100 200" style="width:200px;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.12));" xmlns="http://www.w3.org/2000/svg">
+    <!-- Shadow -->
+    <ellipse cx="50" cy="196" rx="22" ry="4" fill="rgba(0,0,0,0.1)"/>
+    <!-- Legs -->
+    <rect x="34" y="126" width="13" height="62" rx="6" fill="#f5cba7"/>
+    <rect x="53" y="126" width="13" height="62" rx="6" fill="#f5cba7"/>
+    <!-- Feet -->
+    <ellipse cx="41" cy="188" rx="10" ry="5" fill="#d4a574"/>
+    <ellipse cx="59" cy="188" rx="10" ry="5" fill="#d4a574"/>
+    <!-- Gi body -->
+    <rect x="26" y="58" width="48" height="70" rx="8" fill="#e3f2fd"/>
+    <!-- Gi lapels -->
+    <polygon points="50,58 34,76 50,82" fill="white"/>
+    <polygon points="50,58 66,76 50,82" fill="white"/>
+    <line x1="50" y1="58" x2="50" y2="128" stroke="#90caf9" stroke-width="1.2"/>
+    <!-- Belt -->
+    <rect x="26" y="104" width="48" height="9" rx="4" fill="#fdd835"/>
+    <rect x="46" y="102" width="18" height="13" rx="3" fill="#f9a825"/>
+    <!-- Arms -->
+    <rect x="10" y="58" width="16" height="52" rx="7" fill="#e3f2fd"/>
+    <rect x="74" y="58" width="16" height="52" rx="7" fill="#e3f2fd"/>
+    <!-- Hands -->
+    <ellipse cx="18" cy="112" rx="7" ry="8" fill="#f5cba7"/>
+    <ellipse cx="82" cy="112" rx="7" ry="8" fill="#f5cba7"/>
+    <!-- Neck -->
+    <rect x="43" y="33" width="14" height="27" rx="5" fill="#f5cba7"/>
+    <!-- Head -->
+    <circle cx="50" cy="22" r="20" fill="#f5cba7"/>
+    <!-- Hair -->
+    <ellipse cx="50" cy="6" rx="20" ry="8" fill="#4e342e"/>
+    <rect x="30" y="2" width="40" height="14" rx="6" fill="#4e342e"/>
+    <!-- Ears -->
+    <ellipse cx="30" cy="22" rx="4" ry="5" fill="#f0b88a"/>
+    <ellipse cx="70" cy="22" rx="4" ry="5" fill="#f0b88a"/>
+    <!-- Eyes -->
+    <circle cx="43" cy="21" r="3" fill="#3e2723"/>
+    <circle cx="57" cy="21" r="3" fill="#3e2723"/>
+    <circle cx="44" cy="20" r="1.2" fill="white"/>
+    <circle cx="58" cy="20" r="1.2" fill="white"/>
+    <!-- Eyebrows -->
+    <line x1="40" y1="16" x2="46" y2="15" stroke="#4e342e" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="54" y1="15" x2="60" y2="16" stroke="#4e342e" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Mouth smile -->
+    <path d="M 44 27 Q 50 32 56 27" stroke="#a0522d" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Keimyaku points -->
+    ${points.map((p, idx) => {
+      const isHL = highlight && p.name === highlight;
+      const show = numberedMode || isHL || (!highlight);
+      if(!show) return '';
+      const num = idx + 1;
+      const color = isHL ? '#e53935' : numberedMode ? '#ff7043' : '#ff7043';
+      const r = isHL ? 8 : 7;
+      return `
+        <circle cx="${p.cx}" cy="${p.cy}" r="${r}" fill="${color}" opacity="${isHL?1:0.85}" stroke="white" stroke-width="2.5"
+          style="filter:drop-shadow(0 2px 4px rgba(229,57,53,0.4))"/>
+        <text x="${p.cx}" y="${p.cy+1}" text-anchor="middle" dominant-baseline="middle"
+          font-size="${isHL?'9':'8'}" fill="white" font-weight="bold" font-family="Nunito,sans-serif">
+          ${numberedMode ? num : (isHL ? p.emoji : num)}
+        </text>
+      `;
+    }).join('')}
+  </svg>`;
+}
+
+
+function kSetupBodyPoint(){
+  // Pick 6 random points from the full pool each game
+  BODY_POINTS_KIDS = kShuffle([...ALL_BODY_POINTS]).slice(0,6);
+  kGame.total=6; kGame.score=0; kGame.current=0;
+  kGame.rounds = kShuffle([...BODY_POINTS_KIDS, ...BODY_POINTS_KIDS]).slice(0,6);
+  kGame.bodyAnswered=false;
+  kRenderBodyPoint();
+}
+
+function kRenderBodyPoint(){
+  const p=kGame.rounds[kGame.current];
+  if(!p || kGame.current>=kGame.total){kShowResults();return;}
+  kUpdateProgress();
+  kGame.bodyAnswered=false;
+  const roundType = kGame.current % 3; // 3 modes rotating
+
+  if(roundType===0) {
+    // Mode A: All points numbered on diagram — choose name of highlighted point
+    const allOpts=kShuffle([p.name,...kShuffle(BODY_POINTS_KIDS.filter(x=>x.name!==p.name)).slice(0,3).map(x=>x.name)]);
+    if(!allOpts.includes(p.name)) allOpts[0]=p.name;
+    kGame.correctBIdx=allOpts.indexOf(p.name);
+    const pointNum = BODY_POINTS_KIDS.findIndex(x=>x.name===p.name)+1;
+    document.getElementById('k-game-area').innerHTML=`
+      <div class="q-card-kids">
+        <div class="q-num-kids">Punto ${kGame.current+1} de ${kGame.total}</div>
+        <div class="q-text-kids" style="font-size:16px;">¿Cómo se llama el punto <span style="color:#e53935;font-size:22px;font-weight:900;">●${pointNum}</span> marcado en el cuerpo?</div>
+      </div>
+      <div style="margin:10px 0;">${kBodySVG(BODY_POINTS_KIDS, p.name, true)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        ${allOpts.map((n,i)=>`
+          <button class="option-kids" onclick="kCheckBody(this,${i})" style="justify-content:center;text-align:center;">
+            ${BODY_POINTS_KIDS.find(x=>x.name===n)?.emoji||'❓'} <span style="font-size:15px;font-weight:800;">${n}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-kids" id="k-fb-body"></div>
+      <div id="k-next-body" style="display:none;text-align:center;margin-top:10px;">
+        <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextBody()">
+          ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+        </button>
+      </div>
+    `;
+  } else if(roundType===1) {
+    // Mode B: Tap on body — name shown, player taps correct point
+    document.getElementById('k-game-area').innerHTML=`
+      <div class="q-card-kids">
+        <div class="q-num-kids">Punto ${kGame.current+1} de ${kGame.total}</div>
+        <div style="font-size:40px;">${p.emoji}</div>
+        <div class="q-text-kids" style="font-size:18px;">Toca el <strong>${p.name}</strong> en el cuerpo</div>
+        <div style="font-size:13px;color:var(--muted);font-weight:600;margin-top:4px;">${p.hint}</div>
+      </div>
+      <div style="margin:10px 0;text-align:center;">
+        <div id="body-tap-zone" onclick="kTapBody(event)" style="cursor:crosshair;display:inline-block;position:relative;">
+          ${kBodySVG(BODY_POINTS_KIDS, null, true)}
+          <div id="tap-indicator" style="position:absolute;display:none;pointer-events:none;"></div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:13px;color:var(--muted);font-weight:700;">👆 Toca el número correcto en el diagrama</div>
+      <div class="feedback-kids" id="k-fb-body"></div>
+      <div id="k-next-body" style="display:none;text-align:center;margin-top:10px;">
+        <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextBody()">
+          ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+        </button>
+      </div>
+    `;
+  } else {
+    // Mode C: Description shown — choose correct point name from 4 options
+    const allOpts=kShuffle([p.name,...kShuffle(BODY_POINTS_KIDS.filter(x=>x.name!==p.name)).slice(0,3).map(x=>x.name)]);
+    if(!allOpts.includes(p.name)) allOpts[0]=p.name;
+    kGame.correctBIdx=allOpts.indexOf(p.name);
+    document.getElementById('k-game-area').innerHTML=`
+      <div class="q-card-kids">
+        <div class="q-num-kids">Punto ${kGame.current+1} de ${kGame.total}</div>
+        <div style="font-size:44px;margin:6px 0;">${p.emoji}</div>
+        <div class="q-text-kids" style="font-size:17px;">¿Cuál es el keimyaku que está en:<br><strong>"${p.desc}"</strong>?</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        ${allOpts.map((n,i)=>`
+          <button class="option-kids" onclick="kCheckBody(this,${i})" style="justify-content:center;text-align:center;">
+            ${BODY_POINTS_KIDS.find(x=>x.name===n)?.emoji||'❓'}
+            <span style="font-size:14px;font-weight:800;display:block;margin-top:4px;">${n}</span>
+            <span style="font-size:11px;color:var(--muted);">${BODY_POINTS_KIDS.find(x=>x.name===n)?.kanji||''}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-kids" id="k-fb-body"></div>
+      <div id="k-next-body" style="display:none;text-align:center;margin-top:10px;">
+        <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextBody()">
+          ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+        </button>
+      </div>
+    `;
+  }
+}
+
+function kTapBody(e) {
+  if(kGame.bodyAnswered) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const svgW = rect.width, svgH = rect.height;
+  const tapX = ((e.clientX - rect.left) / svgW) * 100;
+  const tapY = ((e.clientY - rect.top) / svgH) * 100;
+  // scale to 0-100 viewBox
+  const vbX = tapX;
+  const vbY = (tapY / 100) * 180; // viewBox height is 180
+
+  const p = kGame.rounds[kGame.current];
+  // Check distance to correct point
+  const dist = Math.sqrt((vbX-p.cx)**2 + (vbY-p.cy)**2);
+  const correct = dist < 18; // tolerance radius
+
+  kGame.bodyAnswered = true;
+
+  // Show tap indicator
+  const indicator = document.getElementById('tap-indicator');
+  indicator.style.display='block';
+  indicator.style.cssText=`position:absolute;left:${e.clientX-rect.left-16}px;top:${e.clientY-rect.top-16}px;width:32px;height:32px;border-radius:50%;background:${correct?'rgba(46,125,50,0.6)':'rgba(198,40,40,0.6)'};border:3px solid ${correct?'#2e7d32':'#c62828'};pointer-events:none;`;
+
+  if(correct) { kGame.score++; kSpawnConfetti(); }
+
+  const fb=document.getElementById('k-fb-body');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.innerHTML=correct
+    ?`✅ ¡Correcto! ${p.emoji} El ${p.name} — ${p.desc}`
+    :`❌ ¡Casi! El ${p.name} ${p.emoji} está ${p.hint.replace('¡','').replace('!','')}`;
+
+  // Show correct point on diagram
+  const zone = document.getElementById('body-tap-zone');
+  if(zone) zone.innerHTML = kBodySVG(BODY_POINTS_KIDS, p.name, false);
+
+  document.getElementById('k-next-body').style.display='block';
+  kUpdateProgress();
+}
+
+function kCheckBody(btn,idx){
+  if(kGame.bodyAnswered) return; kGame.bodyAnswered=true;
+  const p=kGame.rounds[kGame.current];
+  const correct=idx===kGame.correctBIdx;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{b.disabled=true; if(i===kGame.correctBIdx) b.classList.add('correct');});
+  if(!correct) btn.classList.add('wrong');
+  else { kGame.score++; kSpawnConfetti(); }
+  const fb=document.getElementById('k-fb-body');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.innerHTML=correct?`✅ ¡Correcto! ${p.emoji} ${p.desc}`:`❌ Era: ${p.name} — ${p.desc}`;
+  document.getElementById('k-next-body').style.display='block';
+  kUpdateProgress();
+}
+function kNextBody(){ kGame.current++; kGame.bodyAnswered=false; if(kGame.current>=kGame.total){kShowResults();return;} kRenderBodyPoint(); }
+
+// ─── STORY ───
+// Big story pool — 5 random questions picked each game
+const ALL_STORY = [
+  // DOSHIN SO - ORIGINS
+  {scene:'🌸', text:'Hace muchos años, un joven japonés llamado Doshin So viajó a China. Allí vio muchas cosas tristes y quería hacer el mundo mejor. ¿Cuántos nombres tenía Doshin So?', choices:['Solo uno: Doshin So','Dos: Doshin So y Kaiso 📖','Tres nombres distintos'], correct:1, explain:'"Kaiso" significa "fundador" — es el título especial con el que llamamos a Doshin So. ¡Como un apodo de honor!'},
+  {scene:'⛩️', text:'Doshin So visitó el templo Shaolin en China. Los monjes allí eran muy fuertes ¿pero qué problema tenían por meditar mucho sin moverse?', choices:['Se quedaban dormidos','Sus cuerpos se volvían débiles 😓','Se aburrían mucho'], correct:1, explain:'¡Los monjes meditaban tanto que sus cuerpos se debilitaban! Por eso Bodhidharma les enseñó ejercicios físicos — ¡y así nació la idea del Ken Zen Ichinyo!'},
+  {scene:'🏯', text:'En 1947, Doshin So volvió a Japón y creó el Shorinji Kempo. ¿En qué ciudad de Japón lo fundó?', choices:['Tokio','Osaka','Tadotsu, en Kagawa 🗾'], correct:2, explain:'¡En Tadotsu! Es una pequeña ciudad en la isla de Shikoku. Allí está el Sohonzan — el templo madre de todo el Shorinji Kempo del mundo.'},
+  {scene:'🥋', text:'Doshin So tenía una frase favorita: "Vive la mitad para ti mismo, y la mitad para los demás". ¿Cómo se llama ese principio en japonés?', choices:['Ken Zen Ichinyo','Jita Kyoraku 🌟','Riki Ai Funi'], correct:1, explain:'"Jita Kyoraku" — Jita significa "uno mismo y los demás", Kyoraku significa "disfrutar juntos". ¡Todos felices juntos!'},
+  {scene:'🌍', text:'El Shorinji Kempo llegó al Reino Unido en 1974. ¿Quién lo trajo?', choices:['Doshin So en persona','Tameo Mizuno 🛫','Un alumno británico'], correct:1, explain:'¡Tameo Mizuno! Kaiso le envió desde Japón para enseñar el Shorinji Kempo en Londres. ¡Gracias a él existe tu dojo!'},
+  // PHILOSOPHY
+  {scene:'🧠', text:'Ken Zen Ichinyo es el principio más importante del Shorinji Kempo. ¿Qué significa "Ken"?', choices:['La mente y la meditación','El puño y el cuerpo 👊','El camino y el dojo'], correct:1, explain:'"Ken" significa puño — representa todo lo físico: el cuerpo, los golpes, las técnicas. ¡La parte que entrenamos con el cuerpo!'},
+  {scene:'🧘', text:'Ken Zen Ichinyo: "Ken" es el cuerpo. ¿Y qué significa "Zen"?', choices:['La meditación y la mente 🧘','El combate y la fuerza','Los kata y las formas'], correct:0, explain:'"Zen" es la meditación y la consciencia — la parte mental. ¡Cuerpo y mente juntos es Ken Zen Ichinyo!'},
+  {scene:'💪', text:'Riki Ai Funi significa que la fuerza y el amor van juntos. Si eres muy fuerte pero no tienes compasión, ¿qué eres?', choices:['Un gran kenshi','Peligroso para los demás ⚠️','El más rápido'], correct:1, explain:'¡Exacto! La fuerza sin compasión es peligrosa. Un kenshi de verdad combina fuerza Y amor. ¡Eso es Riki Ai Funi!'},
+  {scene:'🛡️', text:'Shushu Koju es otro principio importante. ¿Qué significa?', choices:['Atacar siempre primero','Defender primero, atacar después 🛡️','Nunca atacar a nadie'], correct:1, explain:'"Shushu" = defender primero. "Koju" = atacar después. ¡En el Shorinji Kempo no atacamos sin razón — primero nos defendemos!'},
+  {scene:'🙏', text:'¿Por qué en el Shorinji Kempo saludamos con el Gassho Rei (palmas juntas) y no con una reverencia como en otros artes marciales?', choices:['Porque es más fácil','Porque significa que todos somos iguales 🙏','Porque lo inventó Doshin So por capricho'], correct:1, explain:'¡Las palmas juntas simbolizan que dos personas se encuentran como iguales! En el Shorinji Kempo todos somos iguales, ¡desde el principiante hasta el Sensei!'},
+  // HISTORY
+  {scene:'🗓️', text:'¿En qué año fundó Doshin So el Shorinji Kempo?', choices:['En 1935','En 1947 🗓️','En 1960'], correct:1, explain:'¡1947! Después de la Segunda Guerra Mundial, Doshin So quería ayudar a reconstruir Japón enseñando a las personas a ser más fuertes y mejores.'},
+  {scene:'🏅', text:'¿Cómo se llama el templo madre del Shorinji Kempo en Japón?', choices:['Templo Shaolin','Sohonzan Shorinji 🏯','Dojo de Tokio'], correct:1, explain:'¡El Sohonzan Shorinji! Está en Tadotsu, Japón. Es como la "casa central" de todo el Shorinji Kempo del mundo. ¡Todos los kenshi pertenecemos a esta gran familia!'},
+  {scene:'🇬🇧', text:'¿En qué año llegó el Shorinji Kempo al Reino Unido?', choices:['En 1960','En 1974 🇬🇧','En 1990'], correct:1, explain:'¡En 1974! Tameo Mizuno llegó a Londres enviado por Kaiso. Luego en 1976 se creó la BSKA y en 1989 se convirtió en la BSKF que conocemos hoy.'},
+  {scene:'🌏', text:'El Shorinji Kempo se practica en todo el mundo. ¿Cómo se llama la organización mundial?', choices:['FIFA del Kempo','WSKO (World Shorinji Kempo Organization) 🌏','BSKF internacional'], correct:1, explain:'¡La WSKO! Es la organización mundial del Shorinji Kempo. Agrupa a todos los países donde se practica — ¡somos una gran familia mundial!'},
+  {scene:'👘', text:'¿Cómo se llama el traje blanco que llevamos en el dojo?', choices:['Kimono','Gi 👘','Hakama'], correct:1, explain:'¡El Gi! Es el traje especial de entrenamiento. El blanco representa pureza y el deseo de aprender con la mente limpia.'},
+  // DOJO LIFE
+  {scene:'🧹', text:'¿Cómo se llama la tarea de limpiar y preparar el dojo antes de entrenar?', choices:['Randori','Samu 🧹','Zazen'], correct:1, explain:'¡El Samu! En los dojos zen, los monjes siempre limpian su espacio. ¡Preparar el dojo con cuidado es parte del entrenamiento!'},
+  {scene:'🌟', text:'¿Cuál es la frase más famosa de Doshin So?', choices:['"Entrena duro todos los días"','"Vive la mitad para ti, la mitad para los demás" 🌟','"El más fuerte siempre gana"'], correct:1, explain:'¡Esta frase lo resume todo! Cuidarte a ti mismo Y ayudar a los demás. ¡Eso es lo que hace un verdadero kenshi!'},
+  {scene:'⛩️', text:'¿Qué significa "Dojo" en japonés?', choices:['"Lugar del combate"','"Lugar del camino" 🏯','"Escuela de golpes"'], correct:1, explain:'"Do" = camino, "Jo" = lugar. El dojo es el "lugar del camino" — ¡donde aprendemos y crecemos como personas!'},
+  {scene:'🤲', text:'¿Qué significa la palabra "Kenshi"?', choices:['"Cinturón negro"','"Samurai del puño" 🥋','"Maestro de kempo"'], correct:1, explain:'"Ken" = puño, "Shi" = samurai/guerrero. ¡Kenshi significa "samurai del puño"! Es el nombre que reciben todos los que practican Shorinji Kempo, seas principiante o experto.'},
+  {scene:'🧘', text:'¿Qué hacemos durante el Zazen?', choices:['Practicar técnicas de golpeo','Meditar sentados en silencio 🧘','Cantar canciones japonesas'], correct:1, explain:'¡El Zazen es la meditación sentada! Nos ayuda a calmar la mente, concentrarnos y conectar el cuerpo con el espíritu. ¡Es el "Zen" de Ken Zen Ichinyo!'},
+  {scene:'📜', text:'¿Cómo se llama el texto que recitamos en el dojo (con el Seiku, Seigan y Shinjo)?', choices:['El Kata','El Dokun 📜','El Kiai'], correct:1, explain:'¡El Dokun! Es como la "declaración de principios" del Shorinji Kempo. Lo recitamos para recordar por qué entrenamos y cómo queremos vivir.'},
+  {scene:'🔢', text:'¿Cuántos objetivos únicos tiene el Shorinji Kempo?', choices:['Uno: ser muy fuerte','Dos: cuerpo y mente','Tres: cuerpo sano, mente sana y autodefensa 💪'], correct:2, explain:'¡Tres objetivos! Cuerpo sano, mente sana y saber defenderse. ¡Por eso el Shorinji Kempo es tan especial — no es solo un deporte!'},
+  {scene:'🏹', text:'¿Qué es el Bodhidharma y qué tiene que ver con el Shorinji Kempo?', choices:['Un kata avanzado','Un monje indio que llevó el Zen a China y enseñó ejercicios a los monjes 🧘','El fundador del templo Shaolin'], correct:1, explain:'¡Bodhidharma fue un monje de India que viajó a China! Viendo a los monjes débiles por meditar sin moverse, les enseñó ejercicios físicos. ¡Así nació la idea de unir cuerpo y mente!'},
+];
+
+function kSetupStory(){
+  // Pick 5 random questions each game — always different!
+  const picked = kShuffle([...ALL_STORY]).slice(0,5);
+  kGame.storyPool = picked;
+  kGame.storyIdx=0; kGame.total=picked.length; kGame.score=0;
+  kRenderStory();
+}
+function kRenderStory(){
+  const s=kGame.storyPool[kGame.storyIdx];
+  if(!s){kShowResults();return;}
+  kUpdateProgress(); kGame.current=kGame.storyIdx;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="story-panel">
+      <div class="story-scene">${s.scene}</div>
+      <div class="story-text">${s.text}</div>
+      <div class="story-choices">
+        ${s.choices.map((c,i)=>`<button class="story-choice" onclick="kChooseStory(${i})">${c}</button>`).join('')}
+      </div>
+      <div class="feedback-kids" id="k-fb-story"></div>
+    </div>
+    <div id="k-next-story" style="display:none;text-align:center;margin-top:12px;">
+      <button class="btn-kids btn-blue" style="max-width:220px;" onclick="kNextStory()">
+        ${kGame.storyIdx+1>=kGame.storyPool.length?'¡Ver resultados! 🎉':'¡Continuar la historia! →'}
+      </button>
+    </div>
+  `;
+}
+function kChooseStory(idx){
+  if(kGame.storyAnswered) return; kGame.storyAnswered=true;
+  const s=STORY[kGame.storyIdx];
+  const correct=idx===s.correct;
+  document.querySelectorAll('.story-choice').forEach((b,i)=>{b.disabled=true;});
+  if(correct){kGame.score++; kSpawnConfetti();}
+  const fb=document.getElementById('k-fb-story');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.textContent=(correct?'✅ ':'❌ ')+s.explain;
+  document.getElementById('k-next-story').style.display='block';
+  kUpdateProgress();
+}
+function kNextStory(){ kGame.storyIdx++; kGame.storyAnswered=false; if(kGame.storyIdx>=kGame.storyPool.length){kShowResults();return;} kRenderStory(); }
+
+// ─── DRESS KENSHI ───
+// ─── EL CAMINO DEL KENSHI (tablero) ───
+const CAMINO_PREGUNTAS = [
+  {q:'¿Cómo se dice "gracias" al terminar de entrenar?', opts:['Hajime','Arigato gozaimashita','Yame','Seiza'], correct:1, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+  {q:'¿Qué significa "Sensei"?', opts:['El más fuerte','El fundador','El que nació antes','El campeón'], correct:2, prize:'🌟 ¡Avanzas 3 casillas!', advance:3},
+  {q:'¿En qué año nació el Shorinji Kempo?', opts:['1947','1960','1980','1935'], correct:0, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+  {q:'¿Qué significa "Hajime"?', opts:['Parar','Empezar','Saludar','Sentarse'], correct:1, prize:'🌟 ¡Avanzas 3 casillas!', advance:3},
+  {q:'¿Cómo se llama el saludo con las palmas juntas?', opts:['Kiai','Seiza','Gassho Rei','Samu'], correct:2, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+  {q:'¿Quién fundó el Shorinji Kempo?', opts:['Bodhidharma','Doshin So','Tameo Mizuno','Kaizo'], correct:1, prize:'🏆 ¡Avanzas 4 casillas!', advance:4},
+  {q:'¿Qué es el Samu?', opts:['Un golpe','Limpiar el dojo','Un kata','Meditar'], correct:1, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+  {q:'¿Qué significa "Yame"?', opts:['Empezar','Saltar','Parar','Gritar'], correct:2, prize:'🌟 ¡Avanzas 3 casillas!', advance:3},
+  {q:'¿Cuántos números aprende el kenshi de 5º Kyu en japonés?', opts:['5','10','3','7'], correct:1, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+  {q:'¿Qué es el Kiai?', opts:['Una caída','El grito de espíritu','Un bloqueo','El cinturón'], correct:1, prize:'💥 ¡Avanzas 3 casillas!', advance:3},
+  {q:'¿Qué significa "Kenshi"?', opts:['Maestro','Cinturón negro','Samurai del puño','Dojo'], correct:2, prize:'🌟 ¡Avanzas 3 casillas!', advance:3},
+  {q:'¿Dónde nació Doshin So?', opts:['China','Japón','Corea','Rusia'], correct:1, prize:'⭐ ¡Avanzas 2 casillas!', advance:2},
+];
+
+const CAMINO_CASILLAS = [
+  {tipo:'inicio', emoji:'🏠', label:'¡Inicio!', color:'#e8f5e9'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'bonus', emoji:'🌟', label:'+2 casillas', color:'#e3f2fd', bonus:2},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'trampa', emoji:'😅', label:'-1 casilla', color:'#ffebee', bonus:-1},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'bonus', emoji:'🎁', label:'+2 casillas', color:'#e3f2fd', bonus:2},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'trampa', emoji:'😅', label:'-1 casilla', color:'#ffebee', bonus:-1},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'bonus', emoji:'⭐', label:'+3 casillas', color:'#e3f2fd', bonus:3},
+  {tipo:'pregunta', emoji:'❓', label:'Pregunta', color:'#fff8e1'},
+  {tipo:'normal', emoji:'👣', label:'', color:'white'},
+  {tipo:'meta', emoji:'🏯', label:'¡Meta!', color:'#fce4ec'},
+];
+const TOTAL_CASILLAS = CAMINO_CASILLAS.length - 1;
+
+function kSetupCamino() {
+  kGame.caminoPos = 0;
+  kGame.caminoPreguntas = kShuffle([...CAMINO_PREGUNTAS]);
+  kGame.caminoPregIdx = 0;
+  kGame.total = 4; // max stars based on position reached
+  kGame.score = 0;
+  kGame.caminoPhase = 'board'; // 'board' or 'question'
+  kRenderCamino();
+}
+
+function kRenderCamino() {
+  const pos = kGame.caminoPos;
+  const casilla = CAMINO_CASILLAS[Math.min(pos, TOTAL_CASILLAS)];
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids" style="padding:16px 20px;">
+      <div class="q-num-kids">🗺️ El Camino del Kenshi</div>
+      <div style="font-size:14px;font-weight:800;color:var(--muted);">Estás en la casilla ${pos} de ${TOTAL_CASILLAS}</div>
+    </div>
+    <!-- TABLERO -->
+    <div style="display:flex;flex-wrap:wrap;gap:5px;margin:12px 0;justify-content:center;">
+      ${CAMINO_CASILLAS.map((c,i)=>`
+        <div style="width:40px;height:40px;border-radius:10px;background:${i===pos?'#ff7043':c.color};
+          border:2px solid ${i===pos?'#d84315':'#e0d0b0'};
+          display:flex;align-items:center;justify-content:center;
+          font-size:${i===pos?'22px':'16px'};
+          box-shadow:${i===pos?'0 0 0 3px rgba(230,74,25,0.3)':'none'};
+          transition:all 0.3s;">
+          ${i===pos?'🥋':c.emoji}
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin:12px 0;background:${casilla.color};border-radius:16px;padding:14px;border:2px solid #e0d0b0;">
+      <div style="font-size:32px;">${pos===kGame.caminoPos&&pos>0?casilla.emoji:'🎲'}</div>
+      <div style="font-size:15px;font-weight:800;color:var(--ink2);margin-top:6px;">
+        ${pos===0?'¡Pulsa el dado para empezar!':pos>=TOTAL_CASILLAS?'¡Has llegado a la meta! 🏯':'Casilla '+pos+': '+casilla.label}
+      </div>
+    </div>
+    ${pos>=TOTAL_CASILLAS?`
+      <button class="btn-kids btn-green" style="max-width:250px;margin:0 auto;display:block;" onclick="kShowResults()">
+        ¡Ver mi resultado! 🎉
+      </button>
+    `:`
+      <button class="btn-kids btn-orange" style="max-width:200px;margin:0 auto;display:block;"
+        onclick="kTirarDado()" id="k-dado-btn">
+        🎲 ¡Tirar el dado!
+      </button>
+    `}
+    <div id="k-camino-msg" style="text-align:center;margin-top:12px;font-size:15px;font-weight:800;color:var(--ink2);min-height:24px;"></div>
+  `;
+}
+
+function kTirarDado() {
+  const btn = document.getElementById('k-dado-btn');
+  if(btn) btn.disabled = true;
+  // Animate dice
+  let count = 0;
+  const dado = Math.floor(Math.random()*4)+1; // 1-4
+  const faces = ['1️⃣','2️⃣','3️⃣','4️⃣'];
+  const interval = setInterval(()=>{
+    const msg = document.getElementById('k-camino-msg');
+    if(msg) msg.textContent = '🎲 ' + faces[Math.floor(Math.random()*4)];
+    count++;
+    if(count>=8){
+      clearInterval(interval);
+      if(msg) msg.textContent = `🎲 ¡Sacaste un ${dado}! Avanzas ${dado} casillas`;
+      setTimeout(()=>kAvanzar(dado), 800);
+    }
+  }, 120);
+}
+
+function kAvanzar(pasos) {
+  const newPos = Math.min(kGame.caminoPos + pasos, TOTAL_CASILLAS);
+  kGame.caminoPos = newPos;
+  const casilla = CAMINO_CASILLAS[newPos];
+
+  if(newPos >= TOTAL_CASILLAS) {
+    // Reached end
+    const starsEarned = Math.max(1, Math.floor((kGame.caminoPregIdx/Math.max(kGame.caminoPregIdx,1))*3));
+    kGame.score = kGame.caminoPregIdx > 0 ? starsEarned : 1;
+    kGame.total = 3;
+    kSpawnConfetti(); kSpawnConfetti();
+    kRenderCamino();
+    return;
+  }
+
+  if(casilla.tipo === 'pregunta') {
+    // Show question
+    setTimeout(()=>kCaminoPregunta(), 600);
+    kRenderCamino();
+  } else if(casilla.tipo === 'bonus') {
+    setTimeout(()=>{
+      kGame.caminoPos = Math.min(kGame.caminoPos + casilla.bonus, TOTAL_CASILLAS);
+      kSpawnConfetti();
+      kRenderCamino();
+    }, 700);
+    kRenderCamino();
+  } else if(casilla.tipo === 'trampa') {
+    setTimeout(()=>{
+      kGame.caminoPos = Math.max(0, kGame.caminoPos + casilla.bonus);
+      kRenderCamino();
+    }, 700);
+    kRenderCamino();
+  } else {
+    kRenderCamino();
+  }
+}
+
+function kCaminoPregunta() {
+  const q = kGame.caminoPreguntas[kGame.caminoPregIdx % kGame.caminoPreguntas.length];
+  kGame.caminoPregIdx++;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-num-kids">❓ ¡Pregunta del camino!</div>
+      <div style="font-size:18px;font-weight:800;color:var(--ink);margin-top:8px;">${q.q}</div>
+    </div>
+    <div class="options-kids">
+      ${q.opts.map((o,i)=>`
+        <button class="option-kids" onclick="kCheckCamino(this,${i},${q.correct},'${q.prize.replace(/'/g,'').replace(/!/g,'')}',${q.advance})">
+          <span class="option-letter">${String.fromCharCode(65+i)}</span>${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback-kids" id="k-fb-cam"></div>
+    <div id="k-next-cam" style="display:none;text-align:center;margin-top:12px;">
+      <button class="btn-kids btn-green" style="max-width:200px;" onclick="kRenderCamino()">
+        ¡Seguir el camino! →
+      </button>
+    </div>
+  `;
+}
+
+function kCheckCamino(btn,idx,correct,prize,advance){
+  if(kGame.caminoAnswered) return; kGame.caminoAnswered=true;
+  const isCorrect = idx===correct;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{b.disabled=true; if(i===correct) b.classList.add('correct');});
+  if(!isCorrect) btn.classList.add('wrong');
+  else {
+    kGame.score = Math.min(kGame.score+1, 3);
+    kGame.caminoPos = Math.min(kGame.caminoPos+advance, TOTAL_CASILLAS);
+    kSpawnConfetti();
+  }
+  const fb=document.getElementById('k-fb-cam');
+  fb.style.display='block'; fb.className='feedback-kids '+(isCorrect?'correct':'wrong');
+  fb.innerHTML = isCorrect ? `✅ ${prize}` : `❌ La respuesta correcta era: ${btn.closest('.options-kids').querySelectorAll('.option-kids')[correct].textContent.trim()}`;
+  document.getElementById('k-next-cam').style.display='block';
+  kGame.caminoAnswered=false; // allow next turn
+}
+
+// ─── BUEN KENSHI ───
+const BUENAS_SITUACIONES = [
+  {
+    emoji:'🏠', escena:'Llegas a casa después del cole y ves que mamá o papá están muy cansados.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Ponerse a ver la tele','Preguntar si necesitan ayuda 💪','Ir a jugar a la consola','Pedir la merienda'],
+    correct:1,
+    valor:'Jita Kyoraku',
+    explain:'¡Eso es Jita Kyoraku! "Vivir en armonía con los demás" — fijarnos en quién necesita ayuda y ofrecerla. En el Shorinji Kempo, vivimos la mitad para los demás 💛'
+  },
+  {
+    emoji:'🏫', escena:'En el recreo ves a un compañero del cole que está solo y parece triste.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Ignorarle y seguir jugando','Reírse con los amigos','Ir a hablar con él y preguntarle qué le pasa 🤝','Decirle a un amigo que le mire'],
+    correct:2,
+    valor:'Riki Ai Funi',
+    explain:'¡Riki Ai Funi! La verdadera fuerza incluye la compasión. Un kenshi fuerte de verdad usa su fuerza para ayudar a los demás, no solo para sí mismo 💪❤️'
+  },
+  {
+    emoji:'🍽️', escena:'Terminas de cenar y la mesa está llena de platos sucios.',
+    q:'¿Qué haría un Buen Kenshi sin que nadie te lo pida?',
+    opts:['Esperar a que lo recojan','Decir que lo hará luego','Ayudar a recoger la mesa 🫙','Ir corriendo a tu habitación'],
+    correct:2,
+    valor:'Samu',
+    explain:'¡Como el Samu en el dojo! En el dojo todos limpiamos y preparamos el espacio sin que nadie nos lo mande. ¡En casa también podemos hacer lo mismo! 🧹'
+  },
+  {
+    emoji:'🎮', escena:'Estás jugando a la consola y tu hermano pequeño quiere jugar contigo.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Decirle que espere','Hacerle jugar solo','Dejarle jugar y enseñarle 🎮','Apagar la consola enfadado'],
+    correct:2,
+    valor:'Jita Kyoraku',
+    explain:'"Vivir en armonía con los demás" — compartir con los que queremos es una de las cosas más importantes que enseña el Shorinji Kempo. ¡Doshin So decía "vive la mitad para los demás"! 🌟'
+  },
+  {
+    emoji:'🚌', escena:'Vas en el autobús y ves a una persona mayor que está de pie.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Mirar por la ventana','Ofrecerle tu asiento 💺','Hacerse el dormido','Escuchar música'],
+    correct:1,
+    valor:'Riki Ai Funi',
+    explain:'¡La fuerza y el amor van juntos! Un kenshi usa su energía para hacer el bien — y ofrecer el sitio a alguien que lo necesita es una forma de ser fuerte de verdad 💪❤️'
+  },
+  {
+    emoji:'📚', escena:'Tu amigo del cole no entiende un ejercicio de mates y está muy agobiado.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Decirle que lo haga solo','Copiarle los deberes','Ofrecerte a explicárselo 📖','Cambiar de tema'],
+    correct:2,
+    valor:'Jita Kyoraku',
+    explain:'¡Eso es Jita Kyoraku en acción! Ayudar a un amigo a aprender es una de las mejores cosas que puedes hacer. ¡En el dojo también nos ayudamos entre compañeros! 🌟'
+  },
+  {
+    emoji:'🌳', escena:'Ves un papel tirado en el parque justo al lado de una papelera.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Pasarlo de largo','Esperar a que alguien lo recoja','Tirarlo a la papelera ♻️','Ignorarlo'],
+    correct:2,
+    valor:'Samu',
+    explain:'¡El Buen Kenshi cuida su entorno! En el dojo hacemos Samu para mantener limpio nuestro espacio. ¡El mundo entero puede ser nuestro dojo! 🌍'
+  },
+  {
+    emoji:'😤', escena:'Estás muy enfadado con un amigo porque perdiste un juego.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Insultarle','No hablarle más','Respirar hondo y hablar con calma 😌','Tirar el juego'],
+    correct:2,
+    valor:'Ken Zen Ichinyo',
+    explain:'¡Ken Zen Ichinyo! Cuerpo y mente juntos — cuando la mente está tranquila, el cuerpo actúa bien. Un kenshi controla sus emociones igual que controla sus técnicas 🧘'
+  },
+  {
+    emoji:'🎂', escena:'Hoy es el cumpleaños de tu abuela y se te había olvidado.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['No decir nada','Llamarla y felicitarla aunque sea tarde 📞','Esperar al año siguiente','Decir que ya lo sabías'],
+    correct:1,
+    valor:'Riki Ai Funi',
+    explain:'¡La compasión incluye acordarnos de quienes queremos! Aunque se nos olvide, siempre es mejor reconocerlo y actuar con amor. ¡Eso es Riki Ai Funi! ❤️'
+  },
+  {
+    emoji:'🏃', escena:'En educación física alguien se cae y se hace daño en la rodilla.',
+    q:'¿Qué haría un Buen Kenshi?',
+    opts:['Reírse','Seguir corriendo','Parar y preguntar si está bien 🤝','Esperar a que llegue el profe'],
+    correct:2,
+    valor:'Fusatsu Katsujin',
+    explain:'¡Fusatsu Katsujin! "Dar vida, no matar" — en el Shorinji Kempo siempre protegemos y ayudamos. Detenerse a ayudar a alguien herido es lo más valiente que existe 💪'
+  },
+];
+
+function kSetupBuenas() {
+  const qs = kShuffle([...BUENAS_SITUACIONES]).slice(0,7);
+  kGame.questions=qs; kGame.total=qs.length; kGame.current=0; kGame.score=0;
+  kRenderBuenas();
+}
+
+function kRenderBuenas() {
+  const q=kGame.questions[kGame.current];
+  if(!q){kShowResults();return;}
+  kUpdateProgress();
+  const opts=q.opts;
+  kGame.correctBuenasIdx=q.correct;
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="q-card-kids">
+      <div class="q-num-kids">Situación ${kGame.current+1} de ${kGame.total}</div>
+      <div style="font-size:52px;margin:6px 0;">${q.emoji}</div>
+      <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:10px;font-style:italic;line-height:1.5;">"${q.escena}"</div>
+      <div class="q-text-kids" style="font-size:18px;">${q.q}</div>
+      <div style="margin-top:8px;display:inline-block;background:#fff8e1;border-radius:8px;padding:4px 12px;font-size:12px;font-weight:800;color:#b8860b;">✨ Valor: ${q.valor}</div>
+    </div>
+    <div class="options-kids">
+      ${opts.map((o,i)=>`
+        <button class="option-kids" onclick="kCheckBuenas(this,${i})">
+          <span class="option-letter">${String.fromCharCode(65+i)}</span>${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="feedback-kids" id="k-fb-buenas"></div>
+    <div id="k-next-buenas" style="display:none;text-align:center;margin-top:12px;">
+      <button class="btn-kids btn-green" style="max-width:200px;" onclick="kNextBuenas()">
+        ${kGame.current+1>=kGame.total?'¡Ver resultados! 🎉':'¡Siguiente! →'}
+      </button>
+    </div>
+  `;
+}
+
+function kCheckBuenas(btn,idx){
+  if(kGame.buenasAnswered) return; kGame.buenasAnswered=true;
+  const correct=idx===kGame.correctBuenasIdx;
+  document.querySelectorAll('.option-kids').forEach((b,i)=>{b.disabled=true; if(i===kGame.correctBuenasIdx) b.classList.add('correct');});
+  if(!correct) btn.classList.add('wrong');
+  else { kGame.score++; kSpawnConfetti(); }
+  const q=kGame.questions[kGame.current];
+  const fb=document.getElementById('k-fb-buenas');
+  fb.style.display='block'; fb.className='feedback-kids '+(correct?'correct':'wrong');
+  fb.innerHTML=(correct?'✅ ':'❌ ')+q.explain;
+  document.getElementById('k-next-buenas').style.display='block';
+  kUpdateProgress();
+}
+function kNextBuenas(){ kGame.current++; kGame.buenasAnswered=false; if(kGame.current>=kGame.total){kShowResults();return;} kRenderBuenas(); }
+
+// ─── RESULTS ───
+async function kShowResults() {
+  document.getElementById('k-progress').style.width='100%';
+  const total=kGame.total||1;
+  const score=kGame.score||0;
+  const stars=score>=total?3:score>=total*0.6?2:score>0?1:0;
+  kGame.stars=stars;
+
+  let msg='',emoji='';
+  if(stars===3){msg='¡Eres increíble! ¡Perfecto! 🥋';emoji='🏆';}
+  else if(stars===2){msg='¡Muy bien! ¡Sigue así! 💪';emoji='🌟';}
+  else if(stars===1){msg='¡Buen intento! ¡Practica más!';emoji='😊';}
+  else{msg='¡No pasa nada! ¡Inténtalo de nuevo!';emoji='💪';}
+
+  document.getElementById('k-game-area').innerHTML=`
+    <div class="results-kids">
+      <div class="results-stars">${emoji}</div>
+      <div class="stars-row-result">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+      <div class="results-title">${msg}</div>
+      <div class="results-msg">${score} de ${total} correctas</div>
+      <button class="btn-kids btn-orange" style="max-width:220px;margin-bottom:10px;" onclick="kStartGame('${kGame.id}')">¡Jugar otra vez! 🔄</button>
+      <button class="btn-kids btn-blue" style="max-width:220px;" onclick="kExitGame()">← Elegir otro juego</button>
+    </div>
+  `;
+
+  // Save to Supabase
+  if(kCurrentUser&&kCurrentUser.id) {
+    try {
+      const newBadges=await dbSaveGameResult(kCurrentUser.id, kGame.id, stars);
+    } catch(e){}
+  }
+
+  if(stars>=2) { kShowCelebration(stars, msg, emoji); }
+}
+
+function kShowCelebration(stars,msg,emoji){
+  document.getElementById('k-cel-emoji').textContent=emoji;
+  document.getElementById('k-cel-title').textContent=stars===3?'¡PERFECTO!':'¡Muy bien!';
+  document.getElementById('k-cel-msg').textContent=msg;
+  document.getElementById('k-cel-stars').textContent='⭐'.repeat(stars);
+  document.getElementById('k-celebration').classList.add('show');
+  for(let i=0;i<30;i++) setTimeout(()=>kSpawnConfetti(),i*60);
+}
+function kHideCelebration(){ document.getElementById('k-celebration').classList.remove('show'); }
+
+// ─── CONFETTI ───
+function kSpawnConfetti(){
+  const colors=['#e8334a','#ff7043','#ffd600','#4caf50','#2196f3','#9c27b0'];
+  const el=document.createElement('div');
+  el.className='confetti-piece';
+  el.style.cssText=`left:${Math.random()*100}vw;top:-10px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*0.3}s;animation-duration:${1.5+Math.random()}s`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2500);
+}
+
+// ══════════════════════════════════════════════════
+// SENSEI PANEL
+// ══════════════════════════════════════════════════
+let kAllKids=[], kSelectedKid=null;
+
+async function kRenderSensei(){ kFilterKids(''); }
+
+async function kFilterKids(q){
+  try{ kAllKids=await dbGetAllKids(); } catch(e){ kAllKids=[]; }
+  const filtered=kAllKids.filter(k=>!q||k.username.toLowerCase().includes(q.toLowerCase())||k.name.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('k-kid-list').innerHTML=filtered.length===0
+    ?'<div style="color:#ccc;font-size:14px;padding:20px;text-align:center;">No hay alumnos aún</div>'
+    :filtered.map(k=>`
+      <div class="kid-list-item ${kSelectedKid===k.username?'active':''}" onclick="kSelectKid('${k.username}')">
+        <div class="kid-name">${k.name} ${k.banned?'<span class="banned-tag">🚫</span>':''}</div>
+        <div class="kid-belt-tag">${BELTS[k.belt]?.emoji||'🤍'} ${BELTS[k.belt]?.label||k.belt} · @${k.username} · ${k.age?k.age+' años':''}</div>
+      </div>
+    `).join('');
+}
+
+async function kSelectKid(username){
+  kSelectedKid=username;
+  document.getElementById('k-sensei-detail').innerHTML='<div style="text-align:center;padding:40px;"><div style="font-size:40px">⏳</div></div>';
+  // Update sidebar
+  document.querySelectorAll('.kid-list-item').forEach(el=>{
+    el.classList.toggle('active', el.onclick.toString().includes(`'${username}'`));
+  });
+  try{
+    const k=await sbK(`/kenshi_kids?username=eq.${encodeURIComponent(username)}&limit=1`).then(r=>r&&r[0]);
+    if(!k) return;
+    const [stats,history]=await Promise.all([dbGetKidStats(k.id),dbGetKidHistory(k.id)]);
+    const histRows=history.map(h=>`
+      <tr>
+        <td>${GAME_NAMES[h.game_id]||h.game_id}</td>
+        <td>${'⭐'.repeat(h.stars)}${'☆'.repeat(3-h.stars)}</td>
+        <td>${new Date(h.played_at).toLocaleDateString('es-ES')}</td>
+      </tr>
+    `).join('');
+    document.getElementById('k-sensei-detail').innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-size:24px;font-weight:900;">${k.name} ${BELTS[k.belt]?.emoji||''}</div>
+          <div style="color:#aaa;font-size:14px;font-weight:700;">@${k.username} · ${k.age?k.age+' años':''} · ${BELTS[k.belt]?.label||k.belt}</div>
+          <button onclick="kChangeBelt('${username}','${k.belt}')" style="margin-top:8px;padding:8px 16px;border-radius:10px;border:2px solid #c9a84c;background:#fff8e1;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;color:#5d4e37;">🥋 Cambiar cinturón</button>
+          <div style="color:#aaa;font-size:13px;font-weight:700;">Registrado: ${new Date(k.registered_at).toLocaleDateString('es-ES')} · Accesos: ${k.login_count||0}</div>
+          <div style="margin-top:8px;font-size:24px;">${(stats.badges||[]).join(' ')||'Sin insignias aún'}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          ${k.banned
+            ?`<button class="btn-kids btn-green" style="padding:10px 16px;font-size:13px;" onclick="kUnbanKid('${username}')">✅ Desbloquear</button>`
+            :`<button class="btn-kids btn-red" style="padding:10px 16px;font-size:13px;" onclick="kBanKid('${username}')">🚫 Suspender acceso</button>`}
+          <button class="btn-sm-kids" style="color:var(--red);border-color:var(--red);" onclick="kDeleteKid('${username}')">🗑️ Eliminar</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+        <div class="star-card"><div class="star-num">${stats.total_games||0}</div><div class="star-label">🎮 Partidas</div></div>
+        <div class="star-card"><div class="star-num">${stats.total_stars||0}</div><div class="star-label">⭐ Estrellas</div></div>
+        <div class="star-card"><div class="star-num">${(stats.badges||[]).length}</div><div class="star-label">🏅 Insignias</div></div>
+      </div>
+      ${histRows?`
+        <div class="section-title-kids">Historial de partidas</div>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr style="color:#ccc;font-size:12px;font-weight:800;">
+            <th style="text-align:left;padding:8px;">Juego</th>
+            <th>Estrellas</th><th>Fecha</th>
+          </tr></thead>
+          <tbody>${histRows}</tbody>
+        </table>
+      `:'<div style="color:#ccc;text-align:center;padding:30px;font-weight:700;">¡Aún no ha jugado!</div>'}
+    `;
+  } catch(e){ document.getElementById('k-sensei-detail').innerHTML='<div style="color:red;padding:20px;">Error al cargar</div>'; }
+}
+
+function kBanKid(username){
+  kShowModal('🚫 Suspender acceso',`¿Suspender el acceso de @${username}?`,async()=>{
+    const k=kAllKids.find(x=>x.username===username);
+    if(k) await sbK(`/kenshi_kids?id=eq.${k.id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({banned:true})});
+    kNotify('🚫 Acceso suspendido'); kFilterKids(''); kSelectKid(username);
+  });
+}
+function kUnbanKid(username){
+  kShowModal('✅ Desbloquear',`¿Restaurar el acceso de @${username}?`,async()=>{
+    const k=kAllKids.find(x=>x.username===username);
+    if(k) await sbK(`/kenshi_kids?id=eq.${k.id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({banned:false})});
+    kNotify('✅ Acceso restaurado'); kFilterKids(''); kSelectKid(username);
+  });
+}
+function kDeleteKid(username){
+  kShowModal('🗑️ Eliminar alumno',`¿Eliminar definitivamente a @${username}? No se puede deshacer.`,async()=>{
+    const k=kAllKids.find(x=>x.username===username);
+    if(k) await sbK(`/kenshi_kids?id=eq.${k.id}`,{method:'DELETE',prefer:'return=minimal'});
+    kSelectedKid=null;
+    document.getElementById('k-sensei-detail').innerHTML='<div style="text-align:center;padding:60px;color:#ccc;font-weight:700;">Alumno eliminado</div>';
+    kNotify('🗑️ Alumno eliminado'); kFilterKids('');
+  });
+}
+
+// Modal
+function kShowModal(title,msg,onOk){
+  document.getElementById('k-modal-title').textContent=title;
+  document.getElementById('k-modal-msg').textContent=msg;
+  document.getElementById('k-modal-confirm').onclick=()=>{onOk();kCloseModal();};
+  document.getElementById('k-modal').classList.add('active');
+}
+function kCloseModal(){ document.getElementById('k-modal').classList.remove('active'); }
+
+// Notification
+function kNotify(msg){
+  const n=document.getElementById('k-notif');
+  n.textContent=msg; n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),2500);
+}
+
+// ─── TABS ───
+function kShowTab(tab) {
+  const isGames = tab==='games';
+  document.getElementById('tab-games-content').style.display = isGames?'':'none';
+  document.getElementById('tab-ranking-content').style.display = isGames?'none':'';
+  const btnG = document.getElementById('tab-games');
+  const btnR = document.getElementById('tab-ranking');
+  btnG.style.cssText = `flex:1;padding:12px;border-radius:12px;border:2px solid ${isGames?'#c9a84c':'#e0e0e0'};background:${isGames?'#fff3e0':'#fff'};font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:${isGames?'#3d2b00':'#9e9e9e'};transition:all 0.15s;`;
+  btnR.style.cssText = `flex:1;padding:12px;border-radius:12px;border:2px solid ${!isGames?'#c9a84c':'#e0e0e0'};background:${!isGames?'#fff3e0':'#fff'};font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:${!isGames?'#3d2b00':'#9e9e9e'};transition:all 0.15s;`;
+  if(!isGames) kRenderRanking();
+}
+
+async function kRenderRanking() {
+  const cont = document.getElementById('tab-ranking-content');
+  cont.innerHTML = '<div style="text-align:center;padding:30px;font-size:30px;">⏳</div>';
+  try {
+    const allKids = await sbK('/kenshi_kids?banned=eq.false&order=username.asc') || [];
+    const statsAll = await Promise.all(allKids.map(k => dbGetKidStats(k.id)));
+    const ranking = allKids.map((k,i) => ({...k, stats:statsAll[i]}))
+      .sort((a,b) => (b.stats.total_stars||0) - (a.stats.total_stars||0));
+
+    const me = ranking.findIndex(r => r.id === kCurrentUser?.id);
+
+    cont.innerHTML = `
+      <div class="section-title-kids">🏆 Ranking del Dojo</div>
+      <div style="background:white;border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,0.08);border:2px solid #e8d5b0;overflow:hidden;margin-bottom:16px;">
+        ${ranking.length === 0 ? '<div style="padding:30px;text-align:center;color:#aaa;font-weight:700;">¡Aún no hay kenshi registrados!</div>' :
+          ranking.map((k,i) => {
+            const isMe = k.id === kCurrentUser?.id;
+            const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+            const belt = BELTS[k.belt] || BELTS['blanco'];
+            return `
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #f5f5f5;background:${isMe?'#fff8e1':'white'};${isMe?'border-left:4px solid #f9a825;':''}" >
+                <div style="font-size:22px;width:36px;text-align:center;font-weight:900;">${medal}</div>
+                <div style="flex:1;">
+                  <div style="font-size:15px;font-weight:900;color:${isMe?'#b71c1c':'#1a1200'};">${k.name} ${isMe?'<span style="font-size:11px;background:#ffeb3b;color:#5d4e37;padding:2px 6px;border-radius:6px;margin-left:4px;">¡TÚ!</span>':''}</div>
+                  <div style="font-size:12px;color:#8d6e63;font-weight:700;">${belt.emoji} ${belt.label} · ${k.stats.total_games||0} partidas</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:20px;font-weight:900;color:#e64a19;">⭐ ${k.stats.total_stars||0}</div>
+                  <div style="font-size:18px;">${(k.stats.badges||[]).slice(0,3).join(' ')||''}</div>
+                </div>
+              </div>
+            `;
+          }).join('')
+        }
+      </div>
+      <div style="text-align:center;font-size:13px;color:#aaa;font-weight:700;margin-bottom:20px;">¡Juega más para subir en el ranking! 💪</div>
+    `;
+  } catch(e) {
+    cont.innerHTML = '<div style="padding:30px;text-align:center;color:#e53935;font-weight:700;">Error al cargar el ranking</div>';
+  }
+}
+
+// ─── SENSEI: CHANGE BELT ───
+async function kChangeBelt(username, currentBelt) {
+  const beltKeys = Object.keys(BELTS);
+  const opts = beltKeys.map(b => `<option value="${b}" ${b===currentBelt?'selected':''}>${BELTS[b].emoji} ${BELTS[b].label}</option>`).join('');
+  document.getElementById('k-modal-title').textContent = '🥋 Cambiar cinturón';
+  document.getElementById('k-modal-msg').innerHTML = `
+    <div style="margin-bottom:12px;">Alumno: <strong>${username}</strong></div>
+    <select id="belt-select-modal" style="width:100%;padding:12px;border-radius:10px;border:2px solid #c9a84c;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;background:#fff8ee;">${opts}</select>
+  `;
+  document.getElementById('k-modal-confirm').textContent = '✅ Guardar';
+  document.getElementById('k-modal-confirm').onclick = async () => {
+    const newBelt = document.getElementById('belt-select-modal').value;
+    const k = kAllKids.find(x=>x.username===username);
+    if(k) {
+      await sbK(`/kenshi_kids?id=eq.${k.id}`,{method:'PATCH',prefer:'return=minimal',body:JSON.stringify({belt:newBelt})});
+      kNotify(`🥋 Cinturón actualizado a ${BELTS[newBelt].label}`);
+      kFilterKids('');
+      kSelectKid(username);
+    }
+    kCloseModal();
+  };
+  document.getElementById('k-modal').classList.add('active');
+}
+
+// Init
+document.getElementById('k-login-user').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('k-login-pass').focus();});
+document.getElementById('k-login-pass').addEventListener('keydown',e=>{if(e.key==='Enter') kHandleLogin();});
+kShowLogin();
+</script>
+
+</body>
+</html>
